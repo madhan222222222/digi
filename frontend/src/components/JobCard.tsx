@@ -52,13 +52,27 @@ export function JobCard({
       data-testid={`job-card-${job.id}`}
     >
       <div className="flex items-start justify-between gap-3">
+        <div className="flex min-w-0 gap-3">
+          {job.logo_file_id ? (
+            <img
+              src={`/api/files/public/${job.logo_file_id}`}
+              alt={`${job.company_name} logo`}
+              className="h-11 w-11 shrink-0 rounded-lg border border-slate-200 bg-white object-contain p-1"
+              loading="lazy"
+              data-testid={`job-card-logo-${job.id}`}
+            />
+          ) : (
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 font-heading text-sm font-extrabold text-slate-400">
+              {job.company_name.slice(0, 2).toUpperCase()}
+            </span>
+          )}
         <div className="min-w-0">
           <p className="flex items-center gap-1.5 text-sm font-medium text-slate-600">
             <Building2 className="h-3.5 w-3.5 shrink-0 text-slate-400" />
             <span className="truncate">{job.company_name}</span>
             {job.verification_status === "verified" && (
               <span
-                className="inline-flex items-center gap-1 font-mono text-[10px] font-semibold uppercase tracking-wide text-teal-700"
+                className="inline-flex items-center gap-1 font-mono text-[10px] font-semibold uppercase tracking-wide text-amber-800"
                 title="Reviewed by DigiPhonics — employer and vacancy checks completed"
                 data-testid="job-verified-badge"
               >
@@ -67,10 +81,11 @@ export function JobCard({
             )}
           </p>
           <h3 className="mt-1 truncate font-heading text-base font-bold text-slate-900">
-            <Link to={`/jobs/${job.id}`} className="hover:text-teal-700" data-testid={`job-card-title-${job.id}`}>
+            <Link to={`/jobs/${job.id}`} className="hover:text-amber-800" data-testid={`job-card-title-${job.id}`}>
               {job.title}
             </Link>
           </h3>
+        </div>
         </div>
         {isCandidate && (
           <Button
@@ -80,7 +95,7 @@ export function JobCard({
             onClick={() => saveMut.mutate()}
             data-testid={`job-card-save-btn-${job.id}`}
           >
-            <Bookmark className={`h-4 w-4 ${saved ? "fill-teal-600 text-teal-600" : "text-slate-400"}`} />
+            <Bookmark className={`h-4 w-4 ${saved ? "fill-amber-700 text-amber-700" : "text-slate-400"}`} />
           </Button>
         )}
       </div>
@@ -131,7 +146,7 @@ export function JobCard({
           {showManage && <StatusBadge status={job.status} label={JOB_STATUS_LABELS[job.status] ?? job.status} />}
           <Link
             to={`/jobs/${job.id}`}
-            className="inline-flex h-8 items-center rounded-lg bg-teal-600 px-3 text-sm font-medium text-white transition-colors hover:bg-teal-700 active:scale-[0.98]"
+            className="inline-flex h-8 items-center rounded-lg bg-amber-700 px-3 text-sm font-medium text-white transition-colors hover:bg-amber-800 active:scale-[0.98]"
             data-testid={`job-card-view-btn-${job.id}`}
           >
             View & Apply

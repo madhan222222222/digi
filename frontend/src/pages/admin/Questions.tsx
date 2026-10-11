@@ -132,7 +132,7 @@ export default function AdminQuestions() {
           </Button>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger
-              className="inline-flex h-9 items-center rounded-lg bg-teal-600 px-4 text-sm font-semibold text-white hover:bg-teal-700"
+              className="inline-flex h-9 items-center rounded-lg bg-amber-700 px-4 text-sm font-semibold text-white hover:bg-amber-800"
               data-testid="admin-questions-add-btn"
             >
               <Plus className="mr-1 h-4 w-4" /> Add question

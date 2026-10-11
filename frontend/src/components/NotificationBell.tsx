@@ -47,7 +47,7 @@ export function NotificationBell() {
         <Bell className="h-4 w-4" />
         {unread > 0 && (
           <span
-            className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-teal-600 px-1 font-mono text-[10px] font-bold text-white"
+            className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-700 px-1 font-mono text-[10px] font-bold text-white"
             data-testid="notifications-unread-count"
           >
             {unread > 9 ? "9+" : unread}
@@ -71,7 +71,7 @@ export function NotificationBell() {
             <button
               key={n.id}
               className={`block w-full border-b border-slate-100 px-4 py-3 text-left transition-colors last:border-0 hover:bg-slate-50 ${
-                n.read ? "" : "bg-teal-50/50"
+                n.read ? "" : "bg-amber-50/50"
               }`}
               data-testid={`notification-item-${n.id}`}
               onClick={() => {
@@ -82,7 +82,7 @@ export function NotificationBell() {
               }}
             >
               <span className="flex items-center gap-2">
-                {!n.read && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-teal-600" />}
+                {!n.read && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-700" />}
                 <span className="text-sm font-medium text-slate-900">{n.title}</span>
               </span>
               {n.body && <span className="mt-0.5 block line-clamp-2 text-xs text-slate-500">{n.body}</span>}

@@ -49,7 +49,7 @@ export default function CandidateDashboard() {
   return (
     <div className="space-y-8">
       <div>
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-teal-700">
+        <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-800">
           {categoryMeta?.label ?? "Candidate"} track
         </p>
         <h1 className="mt-2 font-heading text-2xl font-extrabold tracking-tight text-slate-900" data-testid="candidate-dashboard-headline">
@@ -77,7 +77,7 @@ export default function CandidateDashboard() {
         </div>
         <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
           <div
-            className="h-full rounded-full bg-teal-600 transition-all duration-500"
+            className="h-full rounded-full bg-amber-700 transition-all duration-500"
             style={{ width: `${completion}%` }}
           />
         </div>
@@ -88,7 +88,7 @@ export default function CandidateDashboard() {
         {tiles.map((t) => (
           <Link key={t.label} to={t.to} data-testid={`dashboard-tile-${t.label.toLowerCase().replace(/\s+/g, "-")}`}>
             <Card className="h-full p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
-              <t.icon className="h-4 w-4 text-teal-700" />
+              <t.icon className="h-4 w-4 text-amber-800" />
               <p className="mt-3 font-heading text-3xl font-extrabold tracking-tight text-slate-900">{t.value}</p>
               <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wide text-slate-500">{t.label}</p>
             </Card>
@@ -105,7 +105,7 @@ export default function CandidateDashboard() {
         {!latestStage && (
           <p className="mt-3 text-sm text-slate-500">
             No applications yet.{" "}
-            <Link to="/jobs" className="font-semibold text-teal-700 underline">
+            <Link to="/jobs" className="font-semibold text-amber-800 underline">
               Browse openings
             </Link>{" "}
             to get started.
@@ -126,7 +126,7 @@ export default function CandidateDashboard() {
         {/* Interviews */}
         <Card className="p-6 lg:col-span-5" data-testid="dashboard-interviews-card">
           <p className="flex items-center gap-2 font-heading text-base font-bold text-slate-900">
-            <CalendarClock className="h-4 w-4 text-teal-700" /> Upcoming interviews
+            <CalendarClock className="h-4 w-4 text-amber-800" /> Upcoming interviews
           </p>
           <div className="mt-4 space-y-3">
             {(dash?.upcoming_interviews.length ?? 0) === 0 && (
@@ -146,7 +146,7 @@ export default function CandidateDashboard() {
                     href={iv.meeting_link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:underline"
+                    className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-amber-800 hover:underline"
                     data-testid={`dashboard-interview-link-${iv.id}`}
                   >
                     <Video className="h-3.5 w-3.5" /> Join meeting
@@ -162,7 +162,7 @@ export default function CandidateDashboard() {
         <div className="lg:col-span-7">
           <div className="flex items-center justify-between">
             <p className="font-heading text-base font-bold text-slate-900">Recommended openings</p>
-            <Link to="/jobs" className="text-sm font-semibold text-teal-700 hover:underline" data-testid="dashboard-all-jobs-link">
+            <Link to="/jobs" className="text-sm font-semibold text-amber-800 hover:underline" data-testid="dashboard-all-jobs-link">
               Browse all
             </Link>
           </div>

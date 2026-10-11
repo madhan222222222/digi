@@ -62,7 +62,7 @@ export default function Jobs() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-teal-700">Job openings</p>
+      <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-800">Job openings</p>
       <h1 className="mt-2 font-heading text-3xl font-extrabold tracking-tight text-slate-900" data-testid="jobs-headline">
         Find your next IT role
       </h1>

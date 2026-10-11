@@ -13,7 +13,7 @@ export default function LegalPage({ pageKey }: { pageKey: string }) {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6 lg:px-8">
-      <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-teal-700">{meta.eyebrow}</p>
+      <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-800">{meta.eyebrow}</p>
       <h1 className="mt-2 font-heading text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl" data-testid="legal-title">
         {meta.title}
       </h1>

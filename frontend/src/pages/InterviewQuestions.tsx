@@ -73,7 +73,7 @@ function QuestionCard({
             data-testid={`question-bookmark-btn-${q.id}`}
           >
             {bookmarked ? (
-              <BookmarkCheck className="h-4 w-4 text-teal-600" />
+              <BookmarkCheck className="h-4 w-4 text-amber-700" />
             ) : (
               <Bookmark className="h-4 w-4 text-slate-400" />
             )}
@@ -95,7 +95,7 @@ function QuestionCard({
                     ? isAnswer
                       ? "border-green-300 bg-green-50 text-green-800"
                       : "border-red-300 bg-red-50 text-red-700"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-teal-400",
+                    : "border-slate-200 bg-white text-slate-700 hover:border-amber-500",
                 )}
                 onClick={() => setMcqPick(opt)}
                 data-testid={`question-option-${q.id}-${i}`}
@@ -113,7 +113,7 @@ function QuestionCard({
       )}
 
       <button
-        className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:text-teal-800"
+        className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-amber-800 hover:text-amber-900"
         onClick={() => setOpen(!open)}
         data-testid={`question-toggle-answer-${q.id}`}
       >
@@ -138,7 +138,7 @@ function QuestionCard({
           {q.example && (
             <div>
               <p className="font-mono text-[10px] font-semibold uppercase tracking-wide text-slate-500">Example</p>
-              <pre className="mt-1 overflow-x-auto whitespace-pre-wrap rounded bg-hero p-3 font-mono text-[11px] leading-relaxed text-teal-100">
+              <pre className="mt-1 overflow-x-auto whitespace-pre-wrap rounded bg-hero p-3 font-mono text-[11px] leading-relaxed text-amber-100">
                 {q.example}
               </pre>
             </div>
@@ -220,7 +220,7 @@ export default function InterviewQuestions() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-teal-700">
+      <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-800">
         Interview questions
       </p>
       <h1 className="mt-2 font-heading text-3xl font-extrabold tracking-tight text-slate-900" data-testid="questions-headline">
@@ -301,7 +301,7 @@ export default function InterviewQuestions() {
         <div className="space-y-5 lg:col-span-4">
           <Card className="p-5" data-testid="practice-panel">
             <p className="flex items-center gap-2 font-heading text-base font-bold text-slate-900">
-              <Shuffle className="h-4 w-4 text-teal-700" /> Randomized practice set
+              <Shuffle className="h-4 w-4 text-amber-800" /> Randomized practice set
             </p>
             <p className="mt-1 text-xs leading-relaxed text-slate-600">
               Five random questions{get("category") ? ` from ${get("category")}` : ""} with answers revealed one at a
@@ -334,8 +334,8 @@ export default function InterviewQuestions() {
                         className={cn(
                           "rounded-md border px-2 py-1 text-[11px] font-medium transition-colors",
                           get("category") === c
-                            ? "border-teal-600 bg-teal-600 text-white"
-                            : "border-slate-200 bg-white text-slate-600 hover:border-teal-400 hover:bg-teal-50",
+                            ? "border-amber-700 bg-amber-700 text-white"
+                            : "border-slate-200 bg-white text-slate-600 hover:border-amber-500 hover:bg-amber-50",
                         )}
                         onClick={() => setFilter("category", c)}
                         data-testid={`questions-category-chip-${c.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}

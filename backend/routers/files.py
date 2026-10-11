@@ -25,11 +25,27 @@ def _meta_out(meta: dict) -> FileMeta:
 
 @router.post("", response_model=FileMeta)
 async def upload(file: UploadFile, category: str = "document", user: dict = Depends(get_current_user)):
-    if category not in ("resume", "offer_letter", "document", "supporting"):
+    if category not in ("resume", "offer_letter", "document", "supporting", "logo"):
         raise HTTPException(status_code=400, detail="Invalid upload category")
     meta = await save_upload(file, category, user["id"])
     await audit(user, "file.upload", "file", meta["id"], f"category={category}")
     return _meta_out(meta)
+
+
+@router.get("/public/{file_id}")
+async def public_file(file_id: str):
+    """Serves company logos only. Every other category stays behind a download token."""
+    meta = await db.files.find_one({"id": file_id, "category": "logo"})
+    if not meta:
+        raise HTTPException(status_code=404, detail="Logo not found")
+    path = UPLOAD_DIR / meta["stored_name"]
+    if not path.exists():
+        raise HTTPException(status_code=404, detail="Logo data missing")
+    return FileResponse(
+        path,
+        media_type=meta.get("content_type") or "image/png",
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
 
 
 @router.post("/{file_id}/download-link")

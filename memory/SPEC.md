@@ -66,6 +66,19 @@ data through the portals. Every list view therefore has a designed empty state.
 enquiries, audit logs, non-staff users) while keeping the two staff accounts — used to clear
 test data.
 
+## Contact & branding
+- Contact is **direct-channel only — there is no public enquiry form**. Channels live in
+  `src/lib/contact.ts`: email `digihire.in`, WhatsApp channel, Instagram. Rendered by
+  `components/ContactChannels.tsx` on `/contact`, the homepage and the footer. The admin
+  `/admin/enquiries` page and `POST /api/content/enquiries` still exist but nothing submits to them.
+- Theme is **ink (#131A24) + amber** (`--primary: #B45309`, dark-mode accent `#F0B429`). Tailwind
+  utility classes use the `amber-*` scale throughout. Favicon is the DigiPhonics "DP" mark in
+  `public/favicon.svg`.
+- **Company logos**: `logo_file_id` on a job. Employers upload via the Employer form
+  (`category=logo`, png/jpg/webp ≤5 MB) and the logo renders on public job cards and the job detail
+  header. `GET /api/files/public/{id}` serves **only** `category=logo` files without a token —
+  every other category stays behind the 5-minute download token.
+
 ## Notes
 - `GET /api/content/{key}` returns a 200 with `value: ""` when the admin has not customised that
   key; the frontend then renders the bundled `DEFAULT_CONTENT` copy. Never a 404.

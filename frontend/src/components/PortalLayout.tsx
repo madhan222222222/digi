@@ -62,7 +62,7 @@ function SidebarContent({ kind }: { kind: "candidate" | "employee" | "admin" }) 
     <div className="flex h-full flex-col bg-hero text-hero-foreground">
       <div className="border-b border-hero-border p-4">
         <Logo dark />
-        <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-teal-300">{ROLE_LABELS[kind]}</p>
+        <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-amber-400">{ROLE_LABELS[kind]}</p>
       </div>
       <nav className="flex-1 space-y-1 overflow-y-auto p-3" data-testid={`portal-nav-${kind}`}>
         {NAVS[kind].map((item) => (
@@ -74,7 +74,7 @@ function SidebarContent({ kind }: { kind: "candidate" | "employee" | "admin" }) 
               cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-teal-600/20 text-teal-300"
+                  ? "bg-amber-700/20 text-amber-400"
                   : "text-hero-muted hover:bg-hero-card hover:text-white",
               )
             }
@@ -88,7 +88,7 @@ function SidebarContent({ kind }: { kind: "candidate" | "employee" | "admin" }) 
         <div className="border-t border-hero-border p-4">
           <p className="truncate text-sm font-semibold text-white" data-testid="portal-user-name">{user.full_name}</p>
           <p className="truncate text-xs text-hero-muted">{user.email}</p>
-          <Badge variant="outline" className="mt-2 border-teal-600/40 bg-teal-600/10 font-mono text-[10px] uppercase tracking-wide text-teal-300">
+          <Badge variant="outline" className="mt-2 border-amber-700/40 bg-amber-700/10 font-mono text-[10px] uppercase tracking-wide text-amber-400">
             {user.role}
           </Badge>
           <Button

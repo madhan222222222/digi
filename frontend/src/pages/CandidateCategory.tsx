@@ -31,12 +31,12 @@ export default function CandidateCategory() {
             <h1 className="mt-4 max-w-3xl font-heading text-4xl font-extrabold tracking-tight sm:text-5xl" data-testid="category-headline">
               {meta.label}
             </h1>
-            <p className="mt-3 max-w-2xl text-lg text-teal-300">{meta.tagline}</p>
+            <p className="mt-3 max-w-2xl text-lg text-amber-400">{meta.tagline}</p>
             <p className="mt-4 max-w-3xl leading-relaxed text-hero-muted">{meta.intro}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 to={`/register?category=${meta.key}`}
-                className="inline-flex h-11 items-center rounded-lg bg-teal-500 px-5 text-sm font-semibold text-hero transition-colors hover:bg-teal-400 active:scale-[0.98]"
+                className="inline-flex h-11 items-center rounded-lg bg-amber-600 px-5 text-sm font-semibold text-hero transition-colors hover:bg-amber-500 active:scale-[0.98]"
                 data-testid="category-register-btn"
               >
                 <UserPlus className="mr-2 h-4 w-4" /> Register as {meta.label.replace(" Candidates", "")}
@@ -50,7 +50,7 @@ export default function CandidateCategory() {
               </Link>
               <Link
                 to="/interview-questions"
-                className="inline-flex h-11 items-center rounded-lg px-5 text-sm font-semibold text-teal-300 transition-colors hover:text-teal-200"
+                className="inline-flex h-11 items-center rounded-lg px-5 text-sm font-semibold text-amber-400 transition-colors hover:text-amber-300"
                 data-testid="category-questions-btn"
               >
                 <ClipboardList className="mr-2 h-4 w-4" /> Interview preparation
@@ -74,7 +74,7 @@ export default function CandidateCategory() {
                   transition={{ duration: 0.3, delay: i * 0.04 }}
                   className="flex gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-700"
                 >
-                  <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-teal-600" />
+                  <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
                   {h}
                 </motion.li>
               ))}
@@ -82,7 +82,7 @@ export default function CandidateCategory() {
           </div>
           <div className="space-y-5 lg:col-span-5">
             <Card className="p-6" data-testid="category-profile-card">
-              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-teal-700">Your profile</p>
+              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-800">Your profile</p>
               <h3 className="mt-2 font-heading text-base font-bold text-slate-900">What we ask from you</h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">{meta.profileFieldsNote}</p>
               <p className="mt-2 text-xs leading-relaxed text-slate-500">
@@ -90,11 +90,11 @@ export default function CandidateCategory() {
               </p>
             </Card>
             <Card className="p-6" data-testid="category-honesty-card">
-              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-teal-700">Our commitment</p>
+              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-800">Our commitment</p>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">{honestyNote}</p>
             </Card>
             <Card className="p-6" data-testid="category-change-note">
-              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-teal-700">Flexible by design</p>
+              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-800">Flexible by design</p>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">
                 You can change your candidate category later from your profile — your history, applications and
                 documents stay with you.

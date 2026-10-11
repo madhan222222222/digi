@@ -56,8 +56,8 @@ export const CATEGORIES: CategoryMeta[] = [
       "Prepare for transition questions like 'why the move into IT?' with our question library",
     ],
     profileFieldsNote: "Previous industry, transferable skills, technical proficiency, preferred roles, resume and portfolio.",
-    badgeClass: "bg-teal-50 text-teal-700 border-teal-200",
-    chipClass: "bg-teal-50 text-teal-700 border-teal-200",
+    badgeClass: "bg-amber-50 text-amber-800 border-amber-300",
+    chipClass: "bg-amber-50 text-amber-800 border-amber-300",
   },
   {
     key: "career_gap",
@@ -189,7 +189,7 @@ export const DEFAULT_CONTENT: Record<string, string> = {
   employer_solutions:
     "Employers submit their vacancy details once; our team reviews the company and role information, requests evidence where needed, and only then publishes the opening. You keep control of your listing and can update it at any time.",
   contact_info:
-    "The fastest way to reach us is the contact form on this page — our team responds within two business days. Registered candidates and employers can also reach their assigned contact from inside their portal.",
+    "Reach us on email, our WhatsApp channel, or Instagram — our team responds within two business days. Registered candidates and employers can also reach their assigned contact from inside their portal.",
   privacy:
     "We collect only the information needed to run a recruitment service: your identity and contact details, your profile information, your resume, and records of your applications.\n\nYour resume, offer letters and identity documents are private. They are never shown in public search results. Offer letters are visible only to you and to authorised, assigned reviewers. Download access is logged and uses short-lived links.\n\nWe do not sell your personal information. We do not share your profile with employers without an application from you or your explicit consent.\n\nYou can request correction or deletion of your data from your account settings or by writing to us. We retain application records only as long as needed to provide the service and to satisfy legal obligations.\n\nThis summary is provided for convenience; the full policy as amended from time to time applies.",
   terms:

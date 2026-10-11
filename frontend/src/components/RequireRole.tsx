@@ -11,7 +11,7 @@ export function RequireRole({ roles, children }: { roles: string[]; children: Re
   if (isLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center" data-testid="auth-guard-loading">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-teal-600" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-amber-700" />
       </div>
     );
   }

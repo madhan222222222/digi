@@ -34,7 +34,7 @@ export default function AdminOverview() {
   return (
     <div className="space-y-8">
       <div>
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-teal-700">Admin console</p>
+        <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-800">Admin console</p>
         <h1 className="mt-2 font-heading text-2xl font-extrabold tracking-tight text-slate-900" data-testid="admin-overview-headline">
           Platform overview
         </h1>
@@ -44,7 +44,7 @@ export default function AdminOverview() {
         {kpis.map((k) => (
           <Link key={k.label} to={k.to} data-testid={`admin-kpi-${k.label.toLowerCase().replace(/\s+/g, "-")}`}>
             <Card className="h-full p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
-              <k.icon className="h-4 w-4 text-teal-700" />
+              <k.icon className="h-4 w-4 text-amber-800" />
               <p className="mt-3 font-heading text-3xl font-extrabold tracking-tight text-slate-900">{k.value}</p>
               <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wide text-slate-500">{k.label}</p>
             </Card>
@@ -100,7 +100,7 @@ export default function AdminOverview() {
           {(logs?.length ?? 0) === 0 && <p className="text-sm text-slate-500">No audit events yet.</p>}
           {logs?.map((log) => (
             <div key={log.id} className="flex flex-wrap items-baseline gap-2 border-b border-slate-100 py-2 text-xs last:border-0" data-testid={`admin-audit-row-${log.id}`}>
-              <span className="font-mono font-semibold text-teal-700">{log.action}</span>
+              <span className="font-mono font-semibold text-amber-800">{log.action}</span>
               <span className="text-slate-600">
                 {log.actor_email ?? "system"} {log.actor_role ? `(${log.actor_role})` : ""}
               </span>

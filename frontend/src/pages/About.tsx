@@ -21,7 +21,7 @@ export default function About() {
       <section className="bg-hero py-16 text-hero-foreground lg:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-teal-300">About us</p>
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">About us</p>
             <h1 className="mt-3 max-w-3xl font-heading text-4xl font-extrabold tracking-tight sm:text-5xl" data-testid="about-headline">
               Recruitment that starts with real experience — not courses.
             </h1>
@@ -49,20 +49,20 @@ export default function About() {
               <p className="font-heading text-base font-bold text-slate-900">What we are — and are not</p>
               <ul className="mt-4 space-y-3 text-sm">
                 <li className="flex gap-2 text-slate-700">
-                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-teal-700" />
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-800" />
                   We are a recruitment and placement company connecting candidates with reviewed IT openings.
                 </li>
                 <li className="flex gap-2 text-slate-700">
-                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-teal-700" />
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-800" />
                   We publish verified status only after completing employer and vacancy checks — never merely
                   because a website or document was supplied.
                 </li>
                 <li className="flex gap-2 text-slate-700">
-                  <ClipboardList className="mt-0.5 h-4 w-4 shrink-0 text-teal-700" />
+                  <ClipboardList className="mt-0.5 h-4 w-4 shrink-0 text-amber-800" />
                   We are not a training institute: no courses, no batches, no enrollment fees.
                 </li>
                 <li className="flex gap-2 text-slate-700">
-                  <Users className="mt-0.5 h-4 w-4 shrink-0 text-teal-700" />
+                  <Users className="mt-0.5 h-4 w-4 shrink-0 text-amber-800" />
                   We never guarantee an offer, and no fee applies merely for registering, applying or receiving an
                   offer letter.
                 </li>
@@ -98,7 +98,7 @@ export default function About() {
             <ul className="mt-3 space-y-2 text-sm">
               {CATEGORIES.map((c) => (
                 <li key={c.key}>
-                  <Link to={`/candidates/${c.slug}`} className="group flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2 transition-colors hover:border-teal-500/40 hover:bg-teal-50">
+                  <Link to={`/candidates/${c.slug}`} className="group flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2 transition-colors hover:border-amber-600/40 hover:bg-amber-50">
                     <span className="font-medium text-slate-800">{c.label}</span>
                     <span className="font-mono text-[10px] uppercase tracking-wide text-slate-500">{c.badge}</span>
                   </Link>

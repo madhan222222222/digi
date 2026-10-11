@@ -47,6 +47,7 @@ class JobCreate(BaseModel):
     application_instructions: str | None = None
     source: str = "employer_submission"
     supporting_file_id: str | None = None
+    logo_file_id: str | None = None
 
 
 class JobUpdate(BaseModel):
@@ -78,6 +79,7 @@ class JobUpdate(BaseModel):
     interview_rounds: str | None = None
     application_deadline: str | None = None
     application_instructions: str | None = None
+    logo_file_id: str | None = None
 
 
 class JobModerate(BaseModel):
@@ -119,6 +121,7 @@ class Job(BaseModel):
     application_deadline: str | None = None
     application_instructions: str | None = None
     source: str = "employer_submission"
+    logo_file_id: str | None = None
     verification_status: str = "unverified"  # verified | unverified
     status: str = "pending"  # pending | approved | rejected | paused | closed | archived
     employer_id: str | None = None

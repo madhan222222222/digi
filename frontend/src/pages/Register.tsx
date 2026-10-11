@@ -73,7 +73,7 @@ export default function Register() {
       <div className="hidden flex-col justify-between bg-hero p-10 text-hero-foreground lg:col-span-2 lg:flex">
         <Logo dark />
         <div>
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-teal-300">Get started</p>
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Get started</p>
           <h2 className="mt-3 font-heading text-3xl font-extrabold tracking-tight">
             Register once. Apply to every opening that fits.
           </h2>
@@ -88,12 +88,12 @@ export default function Register() {
                 className={cn(
                   "w-full rounded-xl border p-4 text-left transition-colors",
                   role === "candidate" && form.category === c.key
-                    ? "border-teal-500/60 bg-teal-600/15"
-                    : "border-hero-border bg-hero-card hover:border-teal-500/40",
+                    ? "border-amber-600/60 bg-amber-700/15"
+                    : "border-hero-border bg-hero-card hover:border-amber-600/40",
                 )}
                 data-testid={`register-track-${c.slug}`}
               >
-                <span className="font-mono text-[10px] font-semibold uppercase tracking-wide text-teal-300">{c.badge}</span>
+                <span className="font-mono text-[10px] font-semibold uppercase tracking-wide text-amber-400">{c.badge}</span>
                 <span className="mt-0.5 block font-heading text-sm font-bold text-white">{c.label}</span>
                 <span className="mt-0.5 block text-xs text-hero-muted">{c.tagline}</span>
               </button>
@@ -220,8 +220,8 @@ export default function Register() {
               <label className="flex cursor-pointer items-start gap-2.5 rounded-lg border border-slate-200 bg-slate-50 p-3">
                 <Checkbox checked={agreed} onCheckedChange={(v) => setAgreed(!!v)} data-testid="register-terms-checkbox" />
                 <span className="text-xs leading-relaxed text-slate-600">
-                  I agree to the <Link to="/terms" className="font-semibold text-teal-700 underline">Terms &amp; Conditions</Link> and{" "}
-                  <Link to="/privacy" className="font-semibold text-teal-700 underline">Privacy Policy</Link>. I understand
+                  I agree to the <Link to="/terms" className="font-semibold text-amber-800 underline">Terms &amp; Conditions</Link> and{" "}
+                  <Link to="/privacy" className="font-semibold text-amber-800 underline">Privacy Policy</Link>. I understand
                   that no job offer is guaranteed and that any service fee applies only under a separate agreement I
                   accept explicitly.
                 </span>
@@ -235,7 +235,7 @@ export default function Register() {
 
           <p className="mt-5 text-center text-sm text-slate-600">
             Already registered?{" "}
-            <Link to="/login" className="font-semibold text-teal-700 hover:underline" data-testid="register-login-link">
+            <Link to="/login" className="font-semibold text-amber-800 hover:underline" data-testid="register-login-link">
               Sign in
             </Link>
           </p>

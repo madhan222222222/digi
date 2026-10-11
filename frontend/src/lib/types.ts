@@ -115,6 +115,7 @@ export interface Job {
   application_deadline?: string | null;
   application_instructions?: string | null;
   source: string;
+  logo_file_id?: string | null;
   verification_status: string;
   status: string;
   employer_id?: string | null;

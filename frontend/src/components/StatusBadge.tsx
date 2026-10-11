@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 const STATUS_STYLES: Record<string, string> = {
   applied: "bg-slate-100 text-slate-700 border-slate-200",
   under_review: "bg-blue-50 text-blue-700 border-blue-200",
-  shortlisted: "bg-teal-50 text-teal-700 border-teal-200",
+  shortlisted: "bg-amber-50 text-amber-800 border-amber-300",
   interview_scheduled: "bg-amber-50 text-amber-800 border-amber-200",
   interview_completed: "bg-amber-50 text-amber-800 border-amber-200",
   selected: "bg-green-50 text-green-700 border-green-200",

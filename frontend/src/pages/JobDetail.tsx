@@ -103,7 +103,7 @@ export default function JobDetail() {
           title="Job not found"
           description="This opening may have been closed, expired, or removed."
           action={
-            <Link to="/jobs" className="inline-flex h-10 items-center rounded-lg bg-teal-600 px-4 text-sm font-semibold text-white">
+            <Link to="/jobs" className="inline-flex h-10 items-center rounded-lg bg-amber-700 px-4 text-sm font-semibold text-white">
               Browse all openings
             </Link>
           }
@@ -128,11 +128,20 @@ export default function JobDetail() {
         <div className="space-y-6 lg:col-span-8">
           <Card className="p-6" data-testid="job-detail-header-card">
             <div className="flex flex-wrap items-start justify-between gap-4">
-              <div>
+              <div className="flex gap-4">
+                {job.logo_file_id && (
+                  <img
+                    src={`/api/files/public/${job.logo_file_id}`}
+                    alt={`${job.company_name} logo`}
+                    className="h-16 w-16 shrink-0 rounded-xl border border-slate-200 bg-white object-contain p-1.5"
+                    data-testid="job-detail-logo"
+                  />
+                )}
+                <div>
                 <p className="flex items-center gap-1.5 text-sm font-medium text-slate-600">
                   <Building2 className="h-4 w-4 text-slate-400" /> {job.company_name}
                   {job.verification_status === "verified" && (
-                    <span className="inline-flex items-center gap-1 font-mono text-[10px] font-semibold uppercase tracking-wide text-teal-700">
+                    <span className="inline-flex items-center gap-1 font-mono text-[10px] font-semibold uppercase tracking-wide text-amber-800">
                       <BadgeCheck className="h-4 w-4" /> Verified opening
                     </span>
                   )}
@@ -140,6 +149,7 @@ export default function JobDetail() {
                 <h1 className="mt-1 font-heading text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl" data-testid="job-detail-title">
                   {job.title}
                 </h1>
+                </div>
               </div>
               {isCandidate && (
                 <Button
@@ -148,7 +158,7 @@ export default function JobDetail() {
                   onClick={() => saveMut.mutate()}
                   data-testid="job-detail-save-btn"
                 >
-                  <Bookmark className={`h-4 w-4 ${isSaved ? "fill-teal-600 text-teal-600" : ""}`} />
+                  <Bookmark className={`h-4 w-4 ${isSaved ? "fill-amber-700 text-amber-700" : ""}`} />
                   {isSaved ? "Saved" : "Save job"}
                 </Button>
               )}
@@ -211,7 +221,7 @@ export default function JobDetail() {
                   <h3 className="font-heading text-base font-bold text-slate-900">Required skills</h3>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {job.required_skills.map((s) => (
-                      <span key={s} className="rounded-md border border-teal-200 bg-teal-50 px-2 py-0.5 text-xs text-teal-800">
+                      <span key={s} className="rounded-md border border-amber-300 bg-amber-50 px-2 py-0.5 text-xs text-amber-900">
                         {s}
                       </span>
                     ))}
@@ -269,7 +279,7 @@ export default function JobDetail() {
                   href={job.company_website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-teal-700 hover:underline"
+                  className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-amber-800 hover:underline"
                   data-testid="job-detail-website-link"
                 >
                   <Globe className="h-4 w-4" /> Website <ExternalLink className="h-3 w-3" />
@@ -294,7 +304,7 @@ export default function JobDetail() {
             {!user && (
               <div className="mt-4 space-y-3" data-testid="job-detail-guest-apply">
                 <p className="text-sm text-slate-600">Sign in as a candidate to apply and track this application.</p>
-                <Link to="/login" className="inline-flex h-10 w-full items-center justify-center rounded-lg bg-teal-600 text-sm font-semibold text-white hover:bg-teal-700" data-testid="job-detail-login-btn">
+                <Link to="/login" className="inline-flex h-10 w-full items-center justify-center rounded-lg bg-amber-700 text-sm font-semibold text-white hover:bg-amber-800" data-testid="job-detail-login-btn">
                   Login
                 </Link>
                 <Link to="/register" className="inline-flex h-10 w-full items-center justify-center rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50" data-testid="job-detail-register-btn">
@@ -318,19 +328,19 @@ export default function JobDetail() {
             {isCandidate && (
               <>
                 {existing && (
-                  <div className="mt-4 rounded-lg border border-teal-200 bg-teal-50 p-4" data-testid="job-detail-already-applied">
-                    <p className="text-sm font-semibold text-teal-800">Application submitted</p>
-                    <p className="mt-1 text-xs text-teal-700">
+                  <div className="mt-4 rounded-lg border border-amber-300 bg-amber-50 p-4" data-testid="job-detail-already-applied">
+                    <p className="text-sm font-semibold text-amber-900">Application submitted</p>
+                    <p className="mt-1 text-xs text-amber-800">
                       Current stage: {APPLICATION_STATUS_LABELS[existing.status] ?? existing.status}. Track progress in
                       your dashboard.
                     </p>
-                    <Link to="/dashboard/applications" className="mt-2 inline-block text-xs font-semibold text-teal-700 underline">
+                    <Link to="/dashboard/applications" className="mt-2 inline-block text-xs font-semibold text-amber-800 underline">
                       Go to applications
                     </Link>
                   </div>
                 )}
                 {justApplied && !existing && (
-                  <p className="mt-4 rounded-lg border border-teal-200 bg-teal-50 p-4 text-sm font-semibold text-teal-800">
+                  <p className="mt-4 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm font-semibold text-amber-900">
                     Application submitted — track it in your dashboard.
                   </p>
                 )}

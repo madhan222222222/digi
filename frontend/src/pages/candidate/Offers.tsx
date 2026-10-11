@@ -195,7 +195,7 @@ export default function CandidateOffers() {
                   <FileUploadButton category="offer_letter" onUploaded={setFile} testId="offer-upload-btn">
                     <Upload className="h-4 w-4" /> Upload offer letter
                   </FileUploadButton>
-                  {file && <span className="font-mono text-xs text-teal-700" data-testid="offer-file-name">{file.original_name}</span>}
+                  {file && <span className="font-mono text-xs text-amber-800" data-testid="offer-file-name">{file.original_name}</span>}
                 </div>
               </div>
               <p className="rounded-lg bg-slate-50 p-3 text-xs leading-relaxed text-slate-600">

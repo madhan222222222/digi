@@ -127,7 +127,7 @@ function InterviewDialog({ app }: { app: ApplicationRow }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        className="inline-flex h-8 items-center rounded-lg bg-teal-600 px-3 text-xs font-semibold text-white hover:bg-teal-700"
+        className="inline-flex h-8 items-center rounded-lg bg-amber-700 px-3 text-xs font-semibold text-white hover:bg-amber-800"
         data-testid={`employee-schedule-interview-btn-${app.id}`}
       >
         Schedule interview
@@ -511,17 +511,17 @@ export default function EmployeeDashboard() {
 
             <Card className="p-6" data-testid="employee-id-card-panel">
               <h2 className="flex items-center gap-2 font-heading text-lg font-bold text-slate-900">
-                <IdCard className="h-4 w-4 text-teal-700" /> Virtual employee ID
+                <IdCard className="h-4 w-4 text-amber-800" /> Virtual employee ID
               </h2>
               {idCard?.issued ? (
                 <div className="mt-4 rounded-xl bg-hero p-5 text-hero-foreground" data-testid="employee-id-card">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-teal-300">{idCard.company}</p>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-amber-400">{idCard.company}</p>
                   <p className="mt-3 font-heading text-xl font-extrabold">{idCard.full_name}</p>
                   <p className="text-sm text-hero-muted">{idCard.designation || "—"}</p>
                   <div className="mt-4 flex items-end justify-between">
                     <div>
                       <p className="font-mono text-[10px] uppercase tracking-wide text-hero-muted">Employee code</p>
-                      <p className="font-mono text-sm font-bold text-teal-300">{idCard.employee_code}</p>
+                      <p className="font-mono text-sm font-bold text-amber-400">{idCard.employee_code}</p>
                     </div>
                     <p className="font-mono text-[10px] text-hero-muted">{idCard.department}</p>
                   </div>

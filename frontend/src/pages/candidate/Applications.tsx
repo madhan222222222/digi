@@ -21,7 +21,7 @@ function ApplicationRowCard({ app }: { app: ApplicationRow }) {
     <Card className="p-6" data-testid={`application-card-${app.id}`}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <Link to={`/jobs/${app.job_id}`} className="font-heading text-base font-bold text-slate-900 hover:text-teal-700">
+          <Link to={`/jobs/${app.job_id}`} className="font-heading text-base font-bold text-slate-900 hover:text-amber-800">
             {app.job_title}
           </Link>
           <p className="text-sm text-slate-600">{app.company_name}</p>
@@ -37,10 +37,10 @@ function ApplicationRowCard({ app }: { app: ApplicationRow }) {
       </div>
 
       {(interviews?.length ?? 0) > 0 && (
-        <div className="mt-5 rounded-lg border border-teal-200 bg-teal-50 p-4" data-testid={`application-interviews-${app.id}`}>
-          <p className="font-mono text-[10px] font-semibold uppercase tracking-wide text-teal-800">Interviews</p>
+        <div className="mt-5 rounded-lg border border-amber-300 bg-amber-50 p-4" data-testid={`application-interviews-${app.id}`}>
+          <p className="font-mono text-[10px] font-semibold uppercase tracking-wide text-amber-900">Interviews</p>
           {interviews?.map((iv) => (
-            <div key={iv.id} className="mt-2 text-xs text-teal-900">
+            <div key={iv.id} className="mt-2 text-xs text-amber-950">
               <p className="font-semibold">{formatDateTime(iv.scheduled_at)} ({iv.timezone})</p>
               <p>
                 {iv.interview_type}
@@ -60,7 +60,7 @@ function ApplicationRowCard({ app }: { app: ApplicationRow }) {
 
       {app.status_history.length > 0 && (
         <details className="mt-4" data-testid={`application-history-${app.id}`}>
-          <summary className="cursor-pointer text-xs font-semibold text-teal-700">
+          <summary className="cursor-pointer text-xs font-semibold text-amber-800">
             Status history ({app.status_history.length})
           </summary>
           <ol className="mt-3 space-y-2 border-l border-slate-200 pl-4">

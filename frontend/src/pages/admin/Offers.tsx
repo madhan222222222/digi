@@ -35,7 +35,7 @@ function ReviewDialog({ offer }: { offer: OfferRow }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        className="inline-flex h-8 items-center rounded-lg bg-teal-600 px-3 text-xs font-semibold text-white hover:bg-teal-700"
+        className="inline-flex h-8 items-center rounded-lg bg-amber-700 px-3 text-xs font-semibold text-white hover:bg-amber-800"
         data-testid={`admin-offer-review-btn-${offer.id}`}
       >
         Review

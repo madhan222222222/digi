@@ -11,6 +11,7 @@ const ACCEPTS: Record<string, string> = {
   offer_letter: ".pdf",
   document: ".pdf,.jpg,.jpeg,.png",
   supporting: ".pdf,.doc,.docx,.jpg,.jpeg,.png",
+  logo: ".png,.jpg,.jpeg,.webp",
 };
 
 export function FileUploadButton({

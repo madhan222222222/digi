@@ -66,7 +66,7 @@ export default function ResumeResources() {
     <div>
       <section className="bg-hero py-14 text-hero-foreground">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-teal-300">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">
             Career resources
           </p>
           <h1 className="mt-3 max-w-3xl font-heading text-4xl font-extrabold tracking-tight sm:text-5xl" data-testid="resources-headline">
@@ -90,12 +90,12 @@ export default function ResumeResources() {
             >
               <Card className="h-full p-6">
                 <p className="flex items-center gap-2 font-heading text-lg font-bold text-slate-900">
-                  <t.icon className="h-5 w-5 text-teal-700" /> {t.title}
+                  <t.icon className="h-5 w-5 text-amber-800" /> {t.title}
                 </p>
                 <ul className="mt-3 space-y-2 text-sm leading-relaxed text-slate-700">
                   {t.points.map((p) => (
                     <li key={p} className="flex gap-2">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal-600" /> {p}
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" /> {p}
                     </li>
                   ))}
                 </ul>
@@ -114,7 +114,7 @@ export default function ResumeResources() {
                   <button
                     className={cn(
                       "flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left text-sm transition-colors",
-                      checked.has(i) ? "border-teal-300 bg-teal-50 text-teal-900" : "border-slate-200 bg-white text-slate-700 hover:border-teal-300",
+                      checked.has(i) ? "border-amber-400 bg-amber-50 text-amber-950" : "border-slate-200 bg-white text-slate-700 hover:border-amber-400",
                     )}
                     onClick={() =>
                       setChecked((prev) => {
@@ -127,7 +127,7 @@ export default function ResumeResources() {
                     data-testid={`resources-checklist-item-${i}`}
                   >
                     {checked.has(i) ? (
-                      <CheckCircle2 className="h-4 w-4 shrink-0 text-teal-600" />
+                      <CheckCircle2 className="h-4 w-4 shrink-0 text-amber-700" />
                     ) : (
                       <Circle className="h-4 w-4 shrink-0 text-slate-300" />
                     )}
@@ -146,7 +146,7 @@ export default function ResumeResources() {
                   <li key={c.key}>
                     <Link
                       to={`/candidates/${c.slug}`}
-                      className="flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2 text-slate-700 transition-colors hover:border-teal-400 hover:bg-teal-50"
+                      className="flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2 text-slate-700 transition-colors hover:border-amber-500 hover:bg-amber-50"
                     >
                       {c.label}
                       <span className="font-mono text-[10px] uppercase text-slate-400">{c.badge}</span>

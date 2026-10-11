@@ -20,6 +20,8 @@ ALLOWED: dict[str, set[str]] = {
     "offer_letter": {".pdf"},
     "document": {".pdf", ".jpg", ".jpeg", ".png"},
     "supporting": {".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"},
+    # Company logos are the one public category — served without a token so job cards render.
+    "logo": {".png", ".jpg", ".jpeg", ".webp"},
 }
 
 

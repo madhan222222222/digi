@@ -62,6 +62,7 @@ export default function Employer() {
   const [form, setForm] = useState({ ...EMPTY });
   const [categories, setCategories] = useState<string[]>([]);
   const [supportingFile, setSupportingFile] = useState<FileMeta | null>(null);
+  const [logoFile, setLogoFile] = useState<FileMeta | null>(null);
 
   const { data: submissions } = useQuery({
     queryKey: ["employer-submissions"],
@@ -106,12 +107,14 @@ export default function Employer() {
         application_deadline: form.application_deadline || null,
         application_instructions: form.application_instructions || null,
         supporting_file_id: supportingFile?.id ?? null,
+        logo_file_id: logoFile?.id ?? null,
       }),
     onSuccess: () => {
       toast.success("Submission received — our team will review it before publication.");
       setForm({ ...EMPTY });
       setCategories([]);
       setSupportingFile(null);
+      setLogoFile(null);
       qc.invalidateQueries({ queryKey: ["employer-submissions"] });
     },
     onError: (err) => toast.error(apiErrorText(err, "Could not submit your vacancy")),
@@ -127,7 +130,7 @@ export default function Employer() {
     <div>
       <section className="bg-hero py-14 text-hero-foreground">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-teal-300">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">
             Employer / Post a job
           </p>
           <h1 className="mt-3 max-w-3xl font-heading text-4xl font-extrabold tracking-tight sm:text-5xl" data-testid="employer-headline">
@@ -156,7 +159,7 @@ export default function Employer() {
               >
                 {/* Company block */}
                 <fieldset className="space-y-4">
-                  <legend className="font-mono text-[11px] font-semibold uppercase tracking-[0.15em] text-teal-700">
+                  <legend className="font-mono text-[11px] font-semibold uppercase tracking-[0.15em] text-amber-800">
                     Company
                   </legend>
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -199,7 +202,7 @@ export default function Employer() {
 
                 {/* Role block */}
                 <fieldset className="space-y-4 border-t border-slate-100 pt-6">
-                  <legend className="font-mono text-[11px] font-semibold uppercase tracking-[0.15em] text-teal-700">
+                  <legend className="font-mono text-[11px] font-semibold uppercase tracking-[0.15em] text-amber-800">
                     The role
                   </legend>
                   <div className="space-y-1.5">
@@ -257,7 +260,7 @@ export default function Employer() {
 
                 {/* Logistics */}
                 <fieldset className="space-y-4 border-t border-slate-100 pt-6">
-                  <legend className="font-mono text-[11px] font-semibold uppercase tracking-[0.15em] text-teal-700">
+                  <legend className="font-mono text-[11px] font-semibold uppercase tracking-[0.15em] text-amber-800">
                     Location, compensation &amp; timeline
                   </legend>
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -316,6 +319,31 @@ export default function Employer() {
                     <Label htmlFor="emp-instructions">Application instructions</Label>
                     <Textarea id="emp-instructions" rows={2} data-testid="employer-instructions-input" {...field("application_instructions")} />
                   </div>
+                  {me?.user && (
+                    <div className="space-y-1.5">
+                      <Label>Company logo (optional)</Label>
+                      <div className="flex flex-wrap items-center gap-3">
+                        <FileUploadButton category="logo" onUploaded={setLogoFile} testId="employer-logo-upload-btn">
+                          Upload logo
+                        </FileUploadButton>
+                        {logoFile && (
+                          <>
+                            <img
+                              src={`/api/files/public/${logoFile.id}`}
+                              alt="Uploaded logo preview"
+                              className="h-10 w-10 rounded-lg border border-slate-200 bg-white object-contain p-1"
+                              data-testid="employer-logo-preview"
+                            />
+                            <span className="font-mono text-xs text-amber-800">{logoFile.original_name}</span>
+                          </>
+                        )}
+                      </div>
+                      <p className="text-xs text-slate-500">
+                        PNG, JPG or WebP up to 5 MB. Your logo appears on the public job card once the listing is
+                        approved.
+                      </p>
+                    </div>
+                  )}
                   {me?.user && (
                     <div className="space-y-1.5">
                       <Label>Supporting document (optional)</Label>
@@ -382,12 +410,12 @@ export default function Employer() {
           <div className="space-y-5 lg:col-span-4">
             <Card className="p-6" data-testid="employer-workflow-card">
               <p className="flex items-center gap-2 font-heading text-base font-bold text-slate-900">
-                <ClipboardCheck className="h-4 w-4 text-teal-700" /> Our review workflow
+                <ClipboardCheck className="h-4 w-4 text-amber-800" /> Our review workflow
               </p>
               <ol className="mt-4 space-y-3">
                 {WORKFLOW.map((step, i) => (
                   <li key={step} className="flex gap-3 text-sm text-slate-700">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-teal-600/10 font-mono text-[11px] font-bold text-teal-700">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-700/10 font-mono text-[11px] font-bold text-amber-800">
                       {i + 1}
                     </span>
                     {step}
@@ -397,7 +425,7 @@ export default function Employer() {
             </Card>
             <Card className="p-6">
               <p className="flex items-center gap-2 font-heading text-base font-bold text-slate-900">
-                <ShieldCheck className="h-4 w-4 text-teal-700" /> On verification
+                <ShieldCheck className="h-4 w-4 text-amber-800" /> On verification
               </p>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">
                 We mark a listing "verified" only after completing our employer and vacancy checks. Supplying a
@@ -406,7 +434,7 @@ export default function Employer() {
             </Card>
             <Card className="p-6">
               <p className="flex items-center gap-2 font-heading text-base font-bold text-slate-900">
-                <Info className="h-4 w-4 text-teal-700" /> Employer accounts
+                <Info className="h-4 w-4 text-amber-800" /> Employer accounts
               </p>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">
                 Register an employer account to track and update your own listings. Editing a published listing sends

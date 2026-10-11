@@ -141,7 +141,7 @@ export default function AdminFees() {
         <TabsContent value="services" className="space-y-4">
           <Dialog open={serviceOpen} onOpenChange={setServiceOpen}>
             <DialogTrigger
-              className="inline-flex h-9 items-center rounded-lg bg-teal-600 px-4 text-sm font-semibold text-white hover:bg-teal-700"
+              className="inline-flex h-9 items-center rounded-lg bg-amber-700 px-4 text-sm font-semibold text-white hover:bg-amber-800"
               data-testid="admin-fee-service-add-btn"
             >
               <Plus className="mr-1 h-4 w-4" /> Configure a service
@@ -386,7 +386,7 @@ function ConfirmPaymentDialog({ record, onConfirm }: { record: FeeRow; onConfirm
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        className="inline-flex h-8 items-center rounded-lg bg-teal-600 px-3 text-xs font-semibold text-white hover:bg-teal-700"
+        className="inline-flex h-8 items-center rounded-lg bg-amber-700 px-3 text-xs font-semibold text-white hover:bg-amber-800"
         data-testid={`admin-fee-confirm-btn-${record.id}`}
       >
         Confirm payment (manual)

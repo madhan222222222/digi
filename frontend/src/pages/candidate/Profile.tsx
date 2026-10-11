@@ -270,7 +270,7 @@ export default function CandidateProfilePage() {
                 <Label htmlFor="p-projects-t">Project portfolio</Label>
                 <Textarea id="p-projects-t" rows={3} data-testid="profile-projects-transition-input" {...field("projects")} />
               </div>
-              <p className="rounded-lg bg-teal-50 p-3 text-xs leading-relaxed text-teal-800">
+              <p className="rounded-lg bg-amber-50 p-3 text-xs leading-relaxed text-amber-900">
                 Present previous experience honestly — describe what you actually did and the skills it built. You are
                 never required to enroll in training to switch careers.
               </p>
@@ -358,7 +358,7 @@ export default function CandidateProfilePage() {
                 <FileText className="h-4 w-4" /> {resume?.original_name ?? "View current resume"}
               </Button>
             )}
-            {resume && <span className="font-mono text-xs text-teal-700">Save the profile to attach it.</span>}
+            {resume && <span className="font-mono text-xs text-amber-800">Save the profile to attach it.</span>}
           </div>
         </Card>
 

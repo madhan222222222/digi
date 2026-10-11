@@ -3,7 +3,7 @@ import { APPLICATION_STAGE_ORDER, APPLICATION_STATUS_LABELS } from "@/lib/format
 import { cn } from "@/lib/utils";
 
 // Linear application pipeline: Applied → … → Offer Received → Joined.
-// Active node pulses teal, passed nodes show a check, upcoming are slate dots.
+// Active node pulses amber, passed nodes show a check, upcoming are slate dots.
 export function StageRail({
   current,
   testPrefix = "stage-rail",
@@ -28,7 +28,7 @@ export function StageRail({
                   className={cn(
                     "flex h-6 w-6 items-center justify-center rounded-full border-2 text-[10px] font-bold transition-colors",
                     active
-                      ? "animate-stage-pulse border-teal-600 bg-teal-600 text-white"
+                      ? "animate-stage-pulse border-amber-700 bg-amber-700 text-white"
                       : done
                         ? "border-green-600 bg-green-600 text-white"
                         : "border-slate-300 bg-white text-slate-400",
@@ -40,7 +40,7 @@ export function StageRail({
                 <span
                   className={cn(
                     "max-w-[86px] text-center font-mono text-[9px] uppercase leading-tight tracking-wide",
-                    active ? "font-bold text-teal-700" : done ? "text-green-700" : "text-slate-400",
+                    active ? "font-bold text-amber-800" : done ? "text-green-700" : "text-slate-400",
                   )}
                 >
                   {APPLICATION_STATUS_LABELS[key]}

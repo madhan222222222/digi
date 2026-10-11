@@ -33,7 +33,7 @@ export default function Login() {
       <div className="hidden flex-col justify-between bg-hero p-10 text-hero-foreground lg:flex">
         <Logo dark />
         <div>
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-teal-300">Secure access</p>
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Secure access</p>
           <h2 className="mt-3 max-w-md font-heading text-3xl font-extrabold tracking-tight">
             One account. Your applications, interviews and offers in one place.
           </h2>
@@ -44,7 +44,7 @@ export default function Login() {
               "Official application stages are updated only by authorised staff.",
             ].map((t) => (
               <li key={t} className="flex gap-2">
-                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-teal-400" /> {t}
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" /> {t}
               </li>
             ))}
           </ul>
@@ -104,7 +104,7 @@ export default function Login() {
           </form>
           <p className="mt-5 text-center text-sm text-slate-600">
             New here?{" "}
-            <Link to="/register" className="font-semibold text-teal-700 hover:underline" data-testid="login-register-link">
+            <Link to="/register" className="font-semibold text-amber-800 hover:underline" data-testid="login-register-link">
               Create a candidate or employer account
             </Link>
           </p>
