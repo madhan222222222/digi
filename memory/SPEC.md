@@ -6,23 +6,50 @@ batches, or enrollment fees anywhere in the product.
 Stack: FastAPI + motor/MongoDB backend (`/api`), Vite + React 19 + TS strict frontend.
 Sessions are httpOnly cookies (`dp_session`), DB-backed in `sessions` (TTL index).
 
-## Roles
-`candidate` · `employer` (both self-register) · `employee` · `admin` (created only from
-`/admin/users` — public registration can never create staff).
+## Roles — ONLY admin & employee accounts exist
+- **No candidate or employer accounts.** Public registration (`POST /api/auth/register`) accepts
+  `role="employee"` only (any other role → 422). Candidate/employer portals and `/dashboard` routes
+  are removed; public visitors browse jobs/questions and reach recruiters through the contact
+  channels (WhatsApp / email / Instagram).
+- **admin** — created only by `POST /api/admin/users` or `backend/seed.py`. Never self-registered.
+- **employee** — self-registers at `/register`, then must clear admin approval.
+
+## Employee onboarding → admin approval (gated)
+`employee_profiles.verification_status`: `pending → submitted → approved | rejected`.
+1. Register → signed in immediately, but `RequireApprovedEmployee` in `App.tsx` allows only
+   `/employee/onboarding` until status is `approved`.
+2. **Step 1** `PUT /api/employee/onboarding/details` — full name, father's name, mother's name, DOB,
+   phone, address, emergency contact, designation, optional ID photo (`category=photo`).
+   Sets `onboarding_step=2`; uploads stay locked until this is saved.
+3. **Step 2** `POST /api/employee/documents` — required `doc_type`s: `aadhaar`, `pan`, `certificate`
+   (private `document` category).
+4. **Step 3** `POST /api/employee/onboarding/submit` — rejects unless details + all three docs exist;
+   status → `submitted`, notifies every admin.
+5. **Admin only**: `/admin/employees` → `PUT /api/admin/employees/{user_id}/verification`
+   (`approved|rejected|pending|submitted`, plus designation, department, `working_days`, `review_note`).
+   Approval unlocks the portal, `GET /api/employee/id-card` (code, photo, designation, working days)
+   and attendance. Rejection returns the wizard to step 1 with the admin note shown.
+
+## Attendance (`attendance` collection, router `/api/attendance`)
+- Employee (approved only): `POST /attendance/me` marks **today** (server-anchored `lib/dates.today_iso`,
+  one record per day) with `present|half_day|leave`; `GET /attendance/me` is their history.
+- Admin: `GET /attendance/admin?date=&employee_id=`, `POST /attendance/admin` (any employee/date,
+  any of `present|half_day|leave|absent|week_off`, upsert + notifies), `DELETE /attendance/admin/{id}`.
+- UI: employee `/employee/attendance`, admin `/admin/attendance`.
 
 ## Candidate tracks (one unified profile; category is switchable without losing history)
 `fresher`, `non_it_to_it`, `career_gap`, `experienced` — landing pages at
 `/candidates/{freshers|non-it-to-it|career-gap|experienced}`.
 
-## Public routes
+## Public routes (no candidate accounts)
 `/` · `/about` · `/candidates/:slug` · `/jobs` · `/jobs/:jobId` · `/interview-questions` ·
 `/resume-resources` · `/employer` · `/contact` · `/privacy` · `/terms` ·
-`/service-agreement` · `/refund-policy` · `/login` · `/register`
+`/service-agreement` · `/refund-policy` · `/login` · `/register` (employee only)
 
 ## Portals
-- **Candidate** `/dashboard` (+ `/profile`, `/applications`, `/saved`, `/offers`, `/services`)
-- **Employee** `/employee` — assigned work only (tabs: assigned work, offer reviews, profile+ID)
-- **Admin** `/admin` (+ `/jobs`, `/applications`, `/questions`, `/offers`, `/fees`, `/users`, `/content`, `/enquiries`)
+- **Employee** `/employee` (+ `/onboarding`, `/attendance`) — assigned work only, gated on approval
+- **Admin** `/admin` (+ `/jobs`, `/applications`, `/questions`, `/offers`, `/fees`, `/employees`,
+  `/attendance`, `/users`, `/content`, `/enquiries`)
 
 ## Key flows
 1. **Employer submission → moderation**: `POST /api/employer/submissions` creates `status=pending`;

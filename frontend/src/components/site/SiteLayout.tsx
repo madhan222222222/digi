@@ -111,7 +111,7 @@ export default function SiteLayout() {
                   Login
                 </Link>
                 <Link to="/register" className={buttonVariants({ size: "sm" })} data-testid="site-register-btn">
-                  Register
+                  Employee Register
                 </Link>
               </>
             )}

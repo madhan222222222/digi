@@ -28,7 +28,7 @@ from models.fees import (
 from models.jobs import Job, JobModerate, JobUpdate, JobVerify
 from models.offers import OfferSubmission
 from models.questions import DIFFICULTIES, QUESTION_TYPES, Question, QuestionCreate, QuestionUpdate
-from models.users import EmployeeProfile, UserOut
+from models.users import WORKING_DAYS, EmployeeProfile, UserOut
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 admin = require_roles("admin")
@@ -532,17 +532,63 @@ async def set_user_status(user_id: str, payload: dict, user: dict = Depends(admi
     return UserOut(**{**clean(updated), "created_at": as_utc(updated.get("created_at"))})
 
 
+@router.get("/employees")
+async def list_employees(status: str | None = None, user: dict = Depends(admin)) -> dict[str, Any]:
+    """Every employee account with its onboarding profile — the admin approval queue."""
+    users = await db.users.find({"role": "employee"}, {"password_hash": 0}).sort("created_at", -1).to_list(500)
+    profiles = {p["user_id"]: p for p in await db.employee_profiles.find({}).to_list(1000)}
+    items: list[dict[str, Any]] = []
+    for u in users:
+        p = profiles.get(u["id"], {})
+        if status and (p.get("verification_status") or "pending") != status:
+            continue
+        items.append(
+            {
+                "user": {**clean(u), "created_at": as_utc(u.get("created_at"))},
+                "profile": {
+                    **clean(p),
+                    "created_at": as_utc(p.get("created_at")),
+                    "updated_at": as_utc(p.get("updated_at")),
+                    "submitted_at": as_utc(p.get("submitted_at")) if p.get("submitted_at") else None,
+                }
+                if p
+                else None,
+            }
+        )
+    return {"items": items, "total": len(items)}
+
+
 @router.put("/employees/{user_id}/verification")
 async def verify_employee(user_id: str, payload: dict, user: dict = Depends(admin)):
     status = payload.get("status")
-    if status not in ("pending", "approved", "rejected"):
+    if status not in ("pending", "submitted", "approved", "rejected"):
         raise HTTPException(status_code=400, detail="Invalid verification status")
     profile = await db.employee_profiles.find_one({"user_id": user_id})
     if not profile:
         raise HTTPException(status_code=404, detail="Employee profile not found")
-    await db.employee_profiles.update_one({"user_id": user_id}, {"$set": {"verification_status": status, "updated_at": _now()}})
-    labels = {"approved": "approved — your virtual ID card is now available", "rejected": "rejected — please re-upload valid documents", "pending": "set back to pending"}
-    await notify(user_id, "Document verification update", f"Your employment document verification was {labels.get(status)}.", "/employee")
+    updates: dict[str, Any] = {"verification_status": status, "updated_at": _now()}
+    if payload.get("review_note") is not None:
+        updates["review_note"] = payload.get("review_note")
+    if payload.get("designation"):
+        updates["designation"] = payload.get("designation")
+    if payload.get("department"):
+        updates["department"] = payload.get("department")
+    if isinstance(payload.get("working_days"), list):
+        updates["working_days"] = [d for d in payload["working_days"] if d in WORKING_DAYS]
+    if status == "approved":
+        updates["onboarding_step"] = 4
+        if not updates.get("working_days") and not profile.get("working_days"):
+            updates["working_days"] = ["mon", "tue", "wed", "thu", "fri"]
+    if status == "rejected":
+        updates["onboarding_step"] = 1
+    await db.employee_profiles.update_one({"user_id": user_id}, {"$set": updates})
+    labels = {
+        "approved": "approved — your portal, employee ID card and daily attendance are now available",
+        "rejected": "returned for correction — please update your details and re-upload valid documents",
+        "pending": "set back to pending",
+        "submitted": "marked as submitted for review",
+    }
+    await notify(user_id, "Onboarding review update", f"Your onboarding was {labels.get(status)}.", "/employee")
     await audit(user, "employee.verify", "employee_profile", profile["id"], f"status={status}")
     return {"ok": True}
 

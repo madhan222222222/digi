@@ -5,7 +5,13 @@ from fastapi.responses import FileResponse
 
 from lib.auth import audit, get_current_user
 from lib.db import db
-from lib.storage import UPLOAD_DIR, create_download_token, file_access_allowed, save_upload
+from lib.storage import (
+    PUBLIC_CATEGORIES,
+    UPLOAD_DIR,
+    create_download_token,
+    file_access_allowed,
+    save_upload,
+)
 from models.misc import FileMeta
 
 router = APIRouter(prefix="/files", tags=["files"])
@@ -25,7 +31,7 @@ def _meta_out(meta: dict) -> FileMeta:
 
 @router.post("", response_model=FileMeta)
 async def upload(file: UploadFile, category: str = "document", user: dict = Depends(get_current_user)):
-    if category not in ("resume", "offer_letter", "document", "supporting", "logo"):
+    if category not in ("resume", "offer_letter", "document", "supporting", "logo", "photo"):
         raise HTTPException(status_code=400, detail="Invalid upload category")
     meta = await save_upload(file, category, user["id"])
     await audit(user, "file.upload", "file", meta["id"], f"category={category}")
@@ -34,13 +40,13 @@ async def upload(file: UploadFile, category: str = "document", user: dict = Depe
 
 @router.get("/public/{file_id}")
 async def public_file(file_id: str):
-    """Serves company logos only. Every other category stays behind a download token."""
-    meta = await db.files.find_one({"id": file_id, "category": "logo"})
+    """Serves company logos and employee ID photos. Every other category stays behind a token."""
+    meta = await db.files.find_one({"id": file_id, "category": {"$in": list(PUBLIC_CATEGORIES)}})
     if not meta:
-        raise HTTPException(status_code=404, detail="Logo not found")
+        raise HTTPException(status_code=404, detail="Image not found")
     path = UPLOAD_DIR / meta["stored_name"]
     if not path.exists():
-        raise HTTPException(status_code=404, detail="Logo data missing")
+        raise HTTPException(status_code=404, detail="Image data missing")
     return FileResponse(
         path,
         media_type=meta.get("content_type") or "image/png",

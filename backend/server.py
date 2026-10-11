@@ -20,6 +20,7 @@ from lib.db import client, db, ensure_indexes
 from routers import (
     admin,
     applications,
+    attendance,
     auth,
     candidate,
     content,
@@ -83,6 +84,7 @@ api_router.include_router(applications.router)
 api_router.include_router(questions.router)
 api_router.include_router(employer.router)
 api_router.include_router(employee.router)
+api_router.include_router(attendance.router)
 api_router.include_router(offers.router)
 api_router.include_router(fees.router)
 api_router.include_router(content.router)

@@ -2,8 +2,8 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import type { LucideIcon } from "lucide-react";
 import {
   BadgeCheck,
-  Bookmark,
   Briefcase,
+  CalendarCheck,
   ClipboardList,
   FileText,
   IndianRupee,
@@ -13,6 +13,7 @@ import {
   MessageSquare,
   ScrollText,
   User,
+  UserCheck,
   Users,
 } from "lucide-react";
 import { useMe, endSession } from "@/lib/session";
@@ -30,16 +31,12 @@ interface NavItem {
   end?: boolean;
 }
 
-const NAVS: Record<"candidate" | "employee" | "admin", NavItem[]> = {
-  candidate: [
-    { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, end: true },
-    { to: "/dashboard/profile", label: "My Profile", icon: User },
-    { to: "/dashboard/applications", label: "Applications", icon: FileText },
-    { to: "/dashboard/saved", label: "Saved Jobs", icon: Bookmark },
-    { to: "/dashboard/offers", label: "Offers & Placement", icon: BadgeCheck },
-    { to: "/dashboard/services", label: "Service Charges", icon: IndianRupee },
+const NAVS: Record<"employee" | "admin", NavItem[]> = {
+  employee: [
+    { to: "/employee", label: "My Workspace", icon: LayoutDashboard, end: true },
+    { to: "/employee/onboarding", label: "Onboarding", icon: User },
+    { to: "/employee/attendance", label: "My Attendance", icon: CalendarCheck },
   ],
-  employee: [{ to: "/employee", label: "My Workspace", icon: LayoutDashboard, end: true }],
   admin: [
     { to: "/admin", label: "Overview", icon: LayoutDashboard, end: true },
     { to: "/admin/jobs", label: "Jobs & Approvals", icon: Briefcase },
@@ -47,15 +44,17 @@ const NAVS: Record<"candidate" | "employee" | "admin", NavItem[]> = {
     { to: "/admin/questions", label: "Question Bank", icon: ClipboardList },
     { to: "/admin/offers", label: "Offer Verification", icon: BadgeCheck },
     { to: "/admin/fees", label: "Fees & Invoices", icon: IndianRupee },
+    { to: "/admin/employees", label: "Employee Approvals", icon: UserCheck },
+    { to: "/admin/attendance", label: "Attendance", icon: CalendarCheck },
     { to: "/admin/users", label: "Users & Staff", icon: Users },
     { to: "/admin/content", label: "Site Content", icon: ScrollText },
     { to: "/admin/enquiries", label: "Enquiries", icon: MessageSquare },
   ],
 };
 
-const ROLE_LABELS = { candidate: "Candidate Portal", employee: "Employee Portal", admin: "Admin Console" };
+const ROLE_LABELS = { employee: "Employee Portal", admin: "Admin Console" };
 
-function SidebarContent({ kind }: { kind: "candidate" | "employee" | "admin" }) {
+function SidebarContent({ kind }: { kind: "employee" | "admin" }) {
   const { data } = useMe();
   const user = data?.user;
   return (
@@ -106,7 +105,7 @@ function SidebarContent({ kind }: { kind: "candidate" | "employee" | "admin" }) 
   );
 }
 
-export default function PortalLayout({ kind }: { kind: "candidate" | "employee" | "admin" }) {
+export default function PortalLayout({ kind }: { kind: "employee" | "admin" }) {
   return (
     <div className="min-h-screen bg-background">
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 lg:block">{<SidebarContent kind={kind} />}</aside>

@@ -1,8 +1,10 @@
-import { Routes, Route } from "react-router-dom";
+import type { ReactNode } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { RequireRole } from "@/components/RequireRole";
 import SiteLayout from "@/components/site/SiteLayout";
 import PortalLayout from "@/components/PortalLayout";
+import { useMe } from "@/lib/session";
 
 // Public
 import Home from "@/pages/Home";
@@ -19,16 +21,10 @@ import NotFound from "@/pages/NotFound";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 
-// Candidate portal
-import CandidateDashboard from "@/pages/candidate/Dashboard";
-import CandidateProfilePage from "@/pages/candidate/Profile";
-import CandidateApplications from "@/pages/candidate/Applications";
-import SavedJobs from "@/pages/candidate/SavedJobs";
-import CandidateOffers from "@/pages/candidate/Offers";
-import CandidateServices from "@/pages/candidate/Services";
-
 // Employee portal
 import EmployeeDashboard from "@/pages/employee/Dashboard";
+import EmployeeOnboarding from "@/pages/employee/Onboarding";
+import EmployeeAttendance from "@/pages/employee/Attendance";
 
 // Admin portal
 import AdminOverview from "@/pages/admin/Overview";
@@ -38,8 +34,22 @@ import AdminQuestions from "@/pages/admin/Questions";
 import AdminOffers from "@/pages/admin/Offers";
 import AdminFees from "@/pages/admin/Fees";
 import AdminUsers from "@/pages/admin/Users";
+import AdminEmployees from "@/pages/admin/Employees";
+import AdminAttendance from "@/pages/admin/Attendance";
 import AdminContent from "@/pages/admin/Content";
 import AdminEnquiries from "@/pages/admin/Enquiries";
+
+// Until an admin approves the onboarding submission, the only employee screen is the wizard.
+function RequireApprovedEmployee({ children }: { children: ReactNode }) {
+  const { data, isLoading } = useMe();
+  const location = useLocation();
+  if (isLoading) return null;
+  const approved = data?.employee_profile?.verification_status === "approved";
+  if (!approved && location.pathname !== "/employee/onboarding") {
+    return <Navigate to="/employee/onboarding" replace />;
+  }
+  return <>{children}</>;
+}
 
 // One <Route> per page in src/pages; BrowserRouter already wraps this in main.tsx.
 export default function App() {
@@ -68,33 +78,20 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
 
-        {/* Candidate portal */}
-        <Route
-          path="/dashboard"
-          element={
-            <RequireRole roles={["candidate"]}>
-              <PortalLayout kind="candidate" />
-            </RequireRole>
-          }
-        >
-          <Route index element={<CandidateDashboard />} />
-          <Route path="profile" element={<CandidateProfilePage />} />
-          <Route path="applications" element={<CandidateApplications />} />
-          <Route path="saved" element={<SavedJobs />} />
-          <Route path="offers" element={<CandidateOffers />} />
-          <Route path="services" element={<CandidateServices />} />
-        </Route>
-
-        {/* Employee portal */}
+        {/* Employee portal — gated on admin approval */}
         <Route
           path="/employee"
           element={
             <RequireRole roles={["employee"]}>
-              <PortalLayout kind="employee" />
+              <RequireApprovedEmployee>
+                <PortalLayout kind="employee" />
+              </RequireApprovedEmployee>
             </RequireRole>
           }
         >
           <Route index element={<EmployeeDashboard />} />
+          <Route path="onboarding" element={<EmployeeOnboarding />} />
+          <Route path="attendance" element={<EmployeeAttendance />} />
         </Route>
 
         {/* Admin portal */}
@@ -112,6 +109,8 @@ export default function App() {
           <Route path="questions" element={<AdminQuestions />} />
           <Route path="offers" element={<AdminOffers />} />
           <Route path="fees" element={<AdminFees />} />
+          <Route path="employees" element={<AdminEmployees />} />
+          <Route path="attendance" element={<AdminAttendance />} />
           <Route path="users" element={<AdminUsers />} />
           <Route path="content" element={<AdminContent />} />
           <Route path="enquiries" element={<AdminEnquiries />} />

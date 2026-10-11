@@ -12,12 +12,14 @@ from lib.db import db
 from lib.storage import as_utc, clean
 from lib.workflow import set_application_status
 from models.jobs import Job
-from models.users import EmployeeProfile, UserOut
+from models.users import EmployeeProfile, OnboardingDetails, UserOut
 
 router = APIRouter(prefix="/employee", tags=["employee"])
 
 staff = require_roles("employee", "admin")
 employee_only = require_roles("employee")
+
+REQUIRED_DOC_TYPES = ["aadhaar", "pan", "certificate"]
 
 
 class EmployeeSelfUpdate(BaseModel):
@@ -120,17 +122,80 @@ async def add_document(payload: DocumentCreate, user: dict = Depends(employee_on
     return profile_out(await db.employee_profiles.find_one({"user_id": user["id"]}))
 
 
+@router.put("/onboarding/details")
+async def save_onboarding_details(payload: OnboardingDetails, user: dict = Depends(employee_only)):
+    """Step 1 — personal details. Documents (step 2) unlock only after this is saved."""
+    profile = await ensure_profile(user)
+    if profile.get("verification_status") == "approved":
+        raise HTTPException(status_code=400, detail="Your onboarding is already approved")
+    updates = {
+        "father_name": payload.father_name.strip(),
+        "mother_name": payload.mother_name.strip(),
+        "date_of_birth": payload.date_of_birth,
+        "address": payload.address.strip(),
+        "emergency_contact": payload.emergency_contact,
+        "designation": payload.designation,
+        "photo_file_id": payload.photo_file_id,
+        "onboarding_step": max(2, int(profile.get("onboarding_step") or 1)),
+        "updated_at": _now(),
+    }
+    await db.employee_profiles.update_one({"user_id": user["id"]}, {"$set": updates})
+    await db.users.update_one(
+        {"id": user["id"]}, {"$set": {"full_name": payload.full_name.strip(), "phone": payload.phone}}
+    )
+    await audit(user, "employee.onboarding_details", "employee_profile", profile["id"])
+    return profile_out(await db.employee_profiles.find_one({"user_id": user["id"]}))
+
+
+@router.post("/onboarding/submit")
+async def submit_onboarding(user: dict = Depends(employee_only)):
+    """Step 3 — send the completed onboarding to the admin. Approval is admin-only."""
+    profile = await ensure_profile(user)
+    if profile.get("verification_status") == "approved":
+        raise HTTPException(status_code=400, detail="Your onboarding is already approved")
+    if not profile.get("father_name") or not profile.get("mother_name") or not profile.get("date_of_birth"):
+        raise HTTPException(status_code=400, detail="Complete your personal details first")
+    types = {d.get("doc_type") for d in (profile.get("documents") or [])}
+    missing = [t for t in REQUIRED_DOC_TYPES if t not in types]
+    if missing:
+        raise HTTPException(status_code=400, detail=f"Upload these documents first: {', '.join(missing)}")
+    await db.employee_profiles.update_one(
+        {"user_id": user["id"]},
+        {
+            "$set": {
+                "verification_status": "submitted",
+                "onboarding_step": 3,
+                "submitted_at": _now(),
+                "review_note": None,
+                "updated_at": _now(),
+            }
+        },
+    )
+    for admin_user in await db.users.find({"role": "admin"}).to_list(50):
+        await notify(
+            admin_user["id"],
+            "Employee onboarding submitted",
+            f"{user.get('full_name')} submitted onboarding details and documents for approval.",
+            "/admin/employees",
+        )
+    await audit(user, "employee.onboarding_submit", "employee_profile", profile["id"])
+    return profile_out(await db.employee_profiles.find_one({"user_id": user["id"]}))
+
+
 @router.get("/id-card")
 async def id_card(user: dict = Depends(employee_only)):
     profile = await ensure_profile(user)
     if profile.get("verification_status") != "approved":
-        raise HTTPException(status_code=403, detail="Your virtual ID card is issued after your documents are verified")
+        raise HTTPException(status_code=403, detail="Your virtual ID card is issued after an admin approves you")
     return {
         "employee_code": profile.get("employee_code"),
         "full_name": user.get("full_name"),
         "designation": profile.get("designation"),
         "department": profile.get("department"),
         "email": user.get("email"),
+        "phone": user.get("phone"),
+        "photo_file_id": profile.get("photo_file_id"),
+        "working_days": profile.get("working_days") or [],
         "company": "DigiPhonics Technology",
         "issued": True,
     }

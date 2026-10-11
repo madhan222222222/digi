@@ -92,11 +92,11 @@ export default function Home() {
                   Explore Job Openings <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
                 <Link
-                  to="/register"
+                  to="/contact"
                   className="inline-flex h-11 items-center rounded-lg bg-white/10 px-5 text-sm font-semibold text-white ring-1 ring-inset ring-white/20 transition-colors hover:bg-white/20 active:scale-[0.98]"
                   data-testid="hero-register-btn"
                 >
-                  Register as a Candidate
+                  Talk to a Recruiter
                 </Link>
                 <Link
                   to="/employer"

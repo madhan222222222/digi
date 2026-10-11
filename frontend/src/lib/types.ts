@@ -61,10 +61,46 @@ export interface EmployeeProfile {
   employee_code?: string | null;
   designation?: string | null;
   department?: string | null;
+  father_name?: string | null;
+  mother_name?: string | null;
+  date_of_birth?: string | null;
+  address?: string | null;
+  emergency_contact?: string | null;
+  photo_file_id?: string | null;
+  onboarding_step: number;
+  submitted_at?: string | null;
+  review_note?: string | null;
+  working_days: string[];
   verification_status: string;
   documents: EmployeeDocument[];
   created_at: string;
   updated_at: string;
+}
+
+export interface AdminEmployeeRow {
+  user: UserOut;
+  profile: EmployeeProfile | null;
+}
+
+export interface AttendanceRow {
+  id: string;
+  employee_id: string;
+  date: string;
+  status: string;
+  check_in?: string | null;
+  note?: string | null;
+  marked_by: string;
+  marked_by_role: string;
+  created_at: string;
+  employee_name?: string | null;
+  employee_email?: string | null;
+}
+
+export interface MyAttendance {
+  items: AttendanceRow[];
+  total: number;
+  today: string;
+  present_days: number;
 }
 
 export type UserRole = "candidate" | "employer" | "employee" | "admin";
@@ -386,6 +422,9 @@ export interface IdCard {
   designation?: string | null;
   department?: string | null;
   email?: string | null;
+  phone?: string | null;
+  photo_file_id?: string | null;
+  working_days?: string[];
   company: string;
   issued: boolean;
 }

@@ -35,11 +35,11 @@ export default function CandidateCategory() {
             <p className="mt-4 max-w-3xl leading-relaxed text-hero-muted">{meta.intro}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                to={`/register?category=${meta.key}`}
+                to="/contact"
                 className="inline-flex h-11 items-center rounded-lg bg-amber-600 px-5 text-sm font-semibold text-hero transition-colors hover:bg-amber-500 active:scale-[0.98]"
                 data-testid="category-register-btn"
               >
-                <UserPlus className="mr-2 h-4 w-4" /> Register as {meta.label.replace(" Candidates", "")}
+                <UserPlus className="mr-2 h-4 w-4" /> Send your profile to our recruiters
               </Link>
               <Link
                 to={`/jobs?category=${meta.key}`}
@@ -96,11 +96,11 @@ export default function CandidateCategory() {
             <Card className="p-6" data-testid="category-change-note">
               <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-800">Flexible by design</p>
               <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                You can change your candidate category later from your profile — your history, applications and
-                documents stay with you.
+                Share your resume with our recruiters on WhatsApp or email — we map you to the openings that fit your
+                experience, whichever track you are on.
               </p>
-              <Link to="/register" className={buttonVariants({ variant: "link", size: "sm", className: "mt-2 px-0" })}>
-                Create your profile <ArrowRight className="h-4 w-4" />
+              <Link to="/contact" className={buttonVariants({ variant: "link", size: "sm", className: "mt-2 px-0" })}>
+                Contact our recruiters <ArrowRight className="h-4 w-4" />
               </Link>
             </Card>
           </div>

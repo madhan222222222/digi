@@ -303,12 +303,15 @@ export default function JobDetail() {
 
             {!user && (
               <div className="mt-4 space-y-3" data-testid="job-detail-guest-apply">
-                <p className="text-sm text-slate-600">Sign in as a candidate to apply and track this application.</p>
-                <Link to="/login" className="inline-flex h-10 w-full items-center justify-center rounded-lg bg-amber-700 text-sm font-semibold text-white hover:bg-amber-800" data-testid="job-detail-login-btn">
-                  Login
+                <p className="text-sm text-slate-600">
+                  Send your resume to our recruiters on WhatsApp or email quoting this role — our team submits your
+                  profile to the employer.
+                </p>
+                <Link to="/contact" className="inline-flex h-10 w-full items-center justify-center rounded-lg bg-amber-700 text-sm font-semibold text-white hover:bg-amber-800" data-testid="job-detail-contact-btn">
+                  Apply through our recruiters
                 </Link>
-                <Link to="/register" className="inline-flex h-10 w-full items-center justify-center rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50" data-testid="job-detail-register-btn">
-                  Register as a candidate
+                <Link to="/login" className="inline-flex h-10 w-full items-center justify-center rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50" data-testid="job-detail-login-btn">
+                  Staff login
                 </Link>
               </div>
             )}

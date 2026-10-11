@@ -9,6 +9,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from lib.auth import (
     COOKIE_NAME,
     audit,
+    notify,
     create_session,
     destroy_session,
     get_current_user,
@@ -64,7 +65,7 @@ async def register(payload: RegisterRequest, response: Response):
     email = payload.email.lower()
     if await db.users.find_one({"email": email}):
         raise HTTPException(status_code=400, detail="An account with this email already exists")
-    role = payload.role
+    role = "employee"
     user_id = str(uuid.uuid4())
     user = {
         "id": user_id,
@@ -74,31 +75,26 @@ async def register(payload: RegisterRequest, response: Response):
         "full_name": payload.full_name.strip(),
         "phone": payload.phone,
         "active": True,
-        "company_name": payload.company_name.strip() if payload.company_name else None,
+        "company_name": None,
         "created_at": _now(),
     }
     await db.users.insert_one(user)
 
-    if role == "candidate":
-        category = payload.category if payload.category in CANDIDATE_CATEGORIES else "fresher"
-        profile = CandidateProfile(
-            user_id=user_id,
-            category=category,
-            current_location=payload.current_location,
-            skills=payload.skills,
-        )
-        await db.candidate_profiles.insert_one(profile.model_dump())
-    else:
-        await db.employer_profiles.insert_one(
-            {
-                "user_id": user_id,
-                "company_name": payload.company_name,
-                "company_website": None,
-                "company_description": None,
-                "recruiter_designation": None,
-                "verification_status": "unverified",
-                "created_at": _now(),
-            }
+    count = await db.employee_profiles.count_documents({})
+    profile = EmployeeProfile(
+        user_id=user_id,
+        employee_code=f"DP-E-{count + 1:04d}",
+        department="Recruitment",
+        verification_status="pending",
+        onboarding_step=1,
+    )
+    await db.employee_profiles.insert_one(profile.model_dump())
+    for admin_user in await db.users.find({"role": "admin"}).to_list(50):
+        await notify(
+            admin_user["id"],
+            "New employee registration",
+            f"{user['full_name']} ({email}) registered and must complete onboarding before approval.",
+            "/admin/employees",
         )
 
     token = await create_session(user_id)

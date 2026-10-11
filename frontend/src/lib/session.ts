@@ -35,11 +35,7 @@ export function homeForRole(role: string): string {
   switch (role) {
     case "admin":
       return "/admin";
-    case "employee":
-      return "/employee";
-    case "employer":
-      return "/employer";
     default:
-      return "/dashboard";
+      return "/employee";
   }
 }

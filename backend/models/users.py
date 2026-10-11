@@ -86,16 +86,56 @@ class EmployeeDocument(BaseModel):
     uploaded_at: datetime = Field(default_factory=_now)
 
 
+WORKING_DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+ATTENDANCE_STATUSES = ["present", "absent", "leave", "half_day", "week_off"]
+
+
 class EmployeeProfile(BaseModel):
     id: str = Field(default_factory=_uuid)
     user_id: str
     employee_code: str | None = None
     designation: str | None = None
     department: str | None = None
-    verification_status: str = "pending"  # pending | approved | rejected
+    # onboarding step 1 — personal details
+    father_name: str | None = None
+    mother_name: str | None = None
+    date_of_birth: str | None = None
+    address: str | None = None
+    emergency_contact: str | None = None
+    photo_file_id: str | None = None
+    # onboarding progress: 1 = details, 2 = documents, 3 = submitted for admin approval
+    onboarding_step: int = 1
+    submitted_at: datetime | None = None
+    review_note: str | None = None
+    working_days: list[str] = []
+    verification_status: str = "pending"  # pending | submitted | approved | rejected
     documents: list[EmployeeDocument] = []
     created_at: datetime = Field(default_factory=_now)
     updated_at: datetime = Field(default_factory=_now)
+
+
+class OnboardingDetails(BaseModel):
+    full_name: str = Field(min_length=1)
+    father_name: str = Field(min_length=1)
+    mother_name: str = Field(min_length=1)
+    date_of_birth: str = Field(min_length=4)
+    phone: str = Field(min_length=5)
+    address: str = Field(min_length=3)
+    emergency_contact: str | None = None
+    designation: str | None = None
+    photo_file_id: str | None = None
+
+
+class AttendanceRecord(BaseModel):
+    id: str = Field(default_factory=_uuid)
+    employee_id: str
+    date: str  # YYYY-MM-DD, anchored server-side
+    status: str = "present"
+    check_in: str | None = None
+    note: str | None = None
+    marked_by: str  # user id of whoever recorded it
+    marked_by_role: str = "employee"
+    created_at: datetime = Field(default_factory=_now)
 
 
 class UserOut(BaseModel):
@@ -120,13 +160,8 @@ class RegisterRequest(BaseModel):
     password: str = Field(min_length=8)
     full_name: str = Field(min_length=1)
     phone: str | None = None
-    role: Literal["candidate", "employer"] = "candidate"
-    # candidate-only fields (optional at registration, completed in the portal)
-    category: str = "fresher"
-    current_location: str | None = None
-    skills: list[str] = []
-    # employer-only fields
-    company_name: str | None = None
+    # Public registration creates employee (staff) accounts only — pending admin approval.
+    role: Literal["employee"] = "employee"
 
 
 class LoginRequest(BaseModel):

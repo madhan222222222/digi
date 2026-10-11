@@ -12,6 +12,7 @@ const ACCEPTS: Record<string, string> = {
   document: ".pdf,.jpg,.jpeg,.png",
   supporting: ".pdf,.doc,.docx,.jpg,.jpeg,.png",
   logo: ".png,.jpg,.jpeg,.webp",
+  photo: ".png,.jpg,.jpeg,.webp",
 };
 
 export function FileUploadButton({

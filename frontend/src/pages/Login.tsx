@@ -64,7 +64,8 @@ export default function Login() {
             Sign in
           </h1>
           <p className="mt-1 text-sm text-slate-600">
-            Candidates, employers and staff all sign in here — your portal is selected automatically.
+            Admin and employee sign-in. New employees can sign in straight away, but only to complete onboarding —
+            portal access is granted after admin approval.
           </p>
           <form
             className="mt-6 space-y-4"
@@ -103,13 +104,13 @@ export default function Login() {
             </Button>
           </form>
           <p className="mt-5 text-center text-sm text-slate-600">
-            New here?{" "}
+            New employee?{" "}
             <Link to="/register" className="font-semibold text-amber-800 hover:underline" data-testid="login-register-link">
-              Create a candidate or employer account
+              Create an employee account
             </Link>
           </p>
           <p className="mt-2 text-center text-xs text-slate-400">
-            Admin and employee accounts are created by DigiPhonics staff only.
+            Admin accounts are created only by DigiPhonics admins — never through public registration.
           </p>
         </Card>
       </div>

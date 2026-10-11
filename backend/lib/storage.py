@@ -22,7 +22,11 @@ ALLOWED: dict[str, set[str]] = {
     "supporting": {".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"},
     # Company logos are the one public category — served without a token so job cards render.
     "logo": {".png", ".jpg", ".jpeg", ".webp"},
+    # Employee ID-card photo — served without a token so the ID card renders.
+    "photo": {".png", ".jpg", ".jpeg", ".webp"},
 }
+
+PUBLIC_CATEGORIES = {"logo", "photo"}
 
 
 def _now() -> datetime:
