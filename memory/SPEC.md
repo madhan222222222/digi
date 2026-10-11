@@ -35,6 +35,11 @@ Sessions are httpOnly cookies (`dp_session`), DB-backed in `sessions` (TTL index
   one record per day) with `present|half_day|leave`; `GET /attendance/me` is their history.
 - Admin: `GET /attendance/admin?date=&employee_id=`, `POST /attendance/admin` (any employee/date,
   any of `present|half_day|leave|absent|week_off`, upsert + notifies), `DELETE /attendance/admin/{id}`.
+- **Monthly report**: `GET /attendance/admin/report?month=YYYY-MM` (defaults to the server's current
+  month) returns per-approved-employee totals (`present`, `half_day`, `leave`, `absent`, `week_off`,
+  `marked_days`, `payable_days` = present + 0.5 × half-day) plus an all-employee `totals` block.
+  Rendered at the top of `/admin/attendance`; the CSV for payroll is built client-side from that
+  payload (no separate export endpoint).
 - UI: employee `/employee/attendance`, admin `/admin/attendance`.
 
 ## Candidate tracks (one unified profile; category is switchable without losing history)

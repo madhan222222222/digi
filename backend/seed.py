@@ -11,8 +11,8 @@ from datetime import datetime, timezone
 from lib.db import client, db, ensure_indexes
 from lib.security import hash_password
 
-ADMIN_EMAIL = "admin@digiphonicstechnology.com"
-ADMIN_PASSWORD = "Admin@12345"
+ADMIN_EMAIL = "madhankrithickm@gmail.com"
+ADMIN_PASSWORD = "madhan@000000"
 EMPLOYEE_EMAIL = "employee@digiphonicstechnology.com"
 EMPLOYEE_PASSWORD = "Employee@12345"
 
@@ -22,8 +22,14 @@ def _now() -> datetime:
 
 
 async def create_account(email: str, password: str, role: str, full_name: str, designation: str | None = None) -> None:
-    if await db.users.find_one({"email": email}):
-        print(f"  exists: {email} ({role})")
+    existing = await db.users.find_one({"email": email})
+    if existing:
+        # Keep the built-in account's password in sync with this file (it is the single source of truth).
+        await db.users.update_one(
+            {"id": existing["id"]},
+            {"$set": {"password_hash": hash_password(password), "role": role, "active": True}},
+        )
+        print(f"  updated: {email} ({role})")
         return
     user_id = str(uuid.uuid4())
     await db.users.insert_one(

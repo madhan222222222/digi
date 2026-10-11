@@ -96,6 +96,29 @@ export interface AttendanceRow {
   employee_email?: string | null;
 }
 
+export interface AttendanceReportRow {
+  employee_id: string;
+  employee_name?: string | null;
+  employee_email?: string | null;
+  employee_code?: string | null;
+  designation?: string | null;
+  working_days: string[];
+  present: number;
+  half_day: number;
+  leave: number;
+  absent: number;
+  week_off: number;
+  marked_days: number;
+  payable_days: number;
+}
+
+export interface AttendanceReport {
+  month: string;
+  items: AttendanceReportRow[];
+  total: number;
+  totals: Record<string, number>;
+}
+
 export interface MyAttendance {
   items: AttendanceRow[];
   total: number;

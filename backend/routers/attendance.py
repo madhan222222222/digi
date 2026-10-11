@@ -110,6 +110,54 @@ async def all_attendance(
     return {"items": rows, "total": len(rows), "today": today_iso()}
 
 
+@router.get("/admin/report")
+async def monthly_report(month: str | None = None, user: dict = Depends(admin)) -> dict[str, Any]:
+    """Per-employee present / half-day / leave / absent / week-off totals for one month (YYYY-MM)."""
+    month = month or today_iso()[:7]
+    if len(month) != 7 or month[4] != "-":
+        raise HTTPException(status_code=400, detail="month must be in YYYY-MM format")
+    rows = await db.attendance.find({"date": {"$regex": f"^{month}"}}).to_list(5000)
+    staff = await db.users.find({"role": "employee"}, {"password_hash": 0}).to_list(500)
+    profiles = {p["user_id"]: p for p in await db.employee_profiles.find({}).to_list(1000)}
+
+    by_employee: dict[str, dict[str, Any]] = {}
+    for u in staff:
+        p = profiles.get(u["id"], {})
+        if (p.get("verification_status") or "pending") != "approved":
+            continue
+        by_employee[u["id"]] = {
+            "employee_id": u["id"],
+            "employee_name": u.get("full_name"),
+            "employee_email": u.get("email"),
+            "employee_code": p.get("employee_code"),
+            "designation": p.get("designation"),
+            "working_days": p.get("working_days") or [],
+            "present": 0,
+            "half_day": 0,
+            "leave": 0,
+            "absent": 0,
+            "week_off": 0,
+            "marked_days": 0,
+        }
+    for r in rows:
+        row = by_employee.get(r["employee_id"])
+        if not row:
+            continue
+        status = r.get("status", "present")
+        if status in row:
+            row[status] += 1
+        row["marked_days"] += 1
+    items = sorted(by_employee.values(), key=lambda r: (r["employee_name"] or "").lower())
+    for r in items:
+        # Payable days: a full present day counts 1, a half day counts 0.5.
+        r["payable_days"] = r["present"] + 0.5 * r["half_day"]
+    totals = {
+        k: sum(r[k] for r in items)
+        for k in ("present", "half_day", "leave", "absent", "week_off", "marked_days", "payable_days")
+    }
+    return {"month": month, "items": items, "total": len(items), "totals": totals}
+
+
 @router.post("/admin")
 async def admin_mark(payload: AdminMarkRequest, user: dict = Depends(admin)):
     target = await db.users.find_one({"id": payload.employee_id, "role": "employee"})

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { CalendarDays, Trash2 } from "lucide-react";
+import { CalendarDays, Download, Trash2 } from "lucide-react";
 import { apiDelete, apiGet, apiPost } from "@/lib/api";
 import { apiErrorText } from "@/lib/errors";
-import type { AdminEmployeeRow, AttendanceRow } from "@/lib/types";
+import type { AdminEmployeeRow, AttendanceReport, AttendanceRow } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,141 @@ const TONES: Record<string, string> = {
   absent: "bg-red-100 text-red-700",
   week_off: "bg-slate-100 text-slate-700",
 };
+
+function MonthlyReport() {
+  const [month, setMonth] = useState("");
+  const { data, isLoading } = useQuery({
+    queryKey: ["admin-attendance-report", month],
+    queryFn: () => apiGet<AttendanceReport>(`/attendance/admin/report${month ? `?month=${month}` : ""}`),
+    retry: false,
+  });
+
+  function downloadCsv() {
+    if (!data || data.items.length === 0) {
+      toast.error("Nothing to export for this month");
+      return;
+    }
+    const header = [
+      "Employee code",
+      "Name",
+      "Email",
+      "Designation",
+      "Present",
+      "Half day",
+      "Leave",
+      "Absent",
+      "Week off",
+      "Days marked",
+      "Payable days",
+    ];
+    const escape = (v: string | number | null | undefined) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const lines = [
+      header.map(escape).join(","),
+      ...data.items.map((r) =>
+        [
+          r.employee_code,
+          r.employee_name,
+          r.employee_email,
+          r.designation,
+          r.present,
+          r.half_day,
+          r.leave,
+          r.absent,
+          r.week_off,
+          r.marked_days,
+          r.payable_days,
+        ]
+          .map(escape)
+          .join(","),
+      ),
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `digiphonics-attendance-${data.month}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("CSV downloaded");
+  }
+
+  return (
+    <Card className="overflow-hidden" data-testid="admin-attendance-report-card">
+      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-slate-200 p-6">
+        <div>
+          <h2 className="font-heading text-lg font-bold text-slate-900">Monthly report</h2>
+          <p className="mt-1 text-sm text-slate-600">
+            Present, leave and absent totals per employee for {data?.month ?? "this month"} — export for payroll.
+          </p>
+        </div>
+        <div className="flex items-end gap-3">
+          <div className="space-y-1.5">
+            <Label htmlFor="report-month">Month</Label>
+            <Input
+              id="report-month"
+              type="month"
+              value={month || (data?.month ?? "")}
+              onChange={(e) => setMonth(e.target.value)}
+              data-testid="admin-report-month-input"
+            />
+          </div>
+          <Button variant="outline" onClick={downloadCsv} data-testid="admin-report-csv-btn">
+            <Download className="h-4 w-4" /> Download CSV
+          </Button>
+        </div>
+      </div>
+      {isLoading ? (
+        <p className="p-6 text-sm text-slate-500">Loading…</p>
+      ) : !data || data.items.length === 0 ? (
+        <EmptyState
+          title="No approved employees for this month"
+          description="Approve an employee and record attendance — totals appear here."
+        />
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Employee</TableHead>
+              <TableHead>Present</TableHead>
+              <TableHead>Half day</TableHead>
+              <TableHead>Leave</TableHead>
+              <TableHead>Absent</TableHead>
+              <TableHead>Week off</TableHead>
+              <TableHead>Payable days</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data.items.map((r) => (
+              <TableRow key={r.employee_id} data-testid={`admin-report-row-${r.employee_id}`}>
+                <TableCell>
+                  <p className="text-sm font-semibold text-slate-900">{r.employee_name}</p>
+                  <p className="font-mono text-[11px] text-slate-500">
+                    {r.employee_code} · {r.designation ?? "—"}
+                  </p>
+                </TableCell>
+                <TableCell className="text-sm" data-testid={`admin-report-present-${r.employee_id}`}>{r.present}</TableCell>
+                <TableCell className="text-sm">{r.half_day}</TableCell>
+                <TableCell className="text-sm">{r.leave}</TableCell>
+                <TableCell className="text-sm">{r.absent}</TableCell>
+                <TableCell className="text-sm">{r.week_off}</TableCell>
+                <TableCell className="text-sm font-semibold text-slate-900">{r.payable_days}</TableCell>
+              </TableRow>
+            ))}
+            <TableRow data-testid="admin-report-totals-row">
+              <TableCell className="text-sm font-bold text-slate-900">All employees</TableCell>
+              <TableCell className="text-sm font-bold">{data.totals.present}</TableCell>
+              <TableCell className="text-sm font-bold">{data.totals.half_day}</TableCell>
+              <TableCell className="text-sm font-bold">{data.totals.leave}</TableCell>
+              <TableCell className="text-sm font-bold">{data.totals.absent}</TableCell>
+              <TableCell className="text-sm font-bold">{data.totals.week_off}</TableCell>
+              <TableCell className="text-sm font-bold">{data.totals.payable_days}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      )}
+    </Card>
+  );
+}
 
 export default function AdminAttendance() {
   const qc = useQueryClient();
@@ -85,6 +220,8 @@ export default function AdminAttendance() {
           Employees mark their own day; you can override, correct or remove any record.
         </p>
       </header>
+
+      <MonthlyReport />
 
       <Card className="p-6" data-testid="admin-attendance-form">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
