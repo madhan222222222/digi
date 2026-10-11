@@ -1,0 +1,248 @@
+{
+  "project_name": "DigiPhonics Technology",
+  "archetype": "THE PERFORMANCE PRO & CORPORATE AUTHORITY (Recruitment & IT Placement)",
+  "design_intent": "A high-trust, elite IT career placement and enterprise recruitment platform. Explicitly structured as a corporate recruitment agency (NOT a coaching or training institute). Palette combines Deep Obsidian, Crisp Slate-Navy, Pure White, and kinetic Signal Teal/Electric Azure accents. Clean Swiss grid alignment, dense data clarity, generous negative space, and clear candidate track pathways.",
+  "theme_mode": "light_default_with_dark_surfaces",
+  "fonts": {
+    "heading_family": "Plus Jakarta Sans",
+    "body_family": "DM Sans",
+    "mono_family": "JetBrains Mono",
+    "import_statement": "@import \"@fontsource-variable/plus-jakarta-sans\";\n@import \"@fontsource-variable/dm-sans\";\n@import \"@fontsource-variable/jetbrains-mono\";",
+    "theme_aliases": {
+      "--font-sans": "'DM Sans Variable', sans-serif",
+      "--font-heading": "'Plus Jakarta Sans Variable', sans-serif",
+      "--font-mono": "'JetBrains Mono Variable', monospace"
+    }
+  },
+  "typography": {
+    "scale_px": {
+      "display": 56,
+      "h1": 44,
+      "h2": 32,
+      "h3": 22,
+      "body": 16,
+      "caption": 14
+    },
+    "rules": {
+      "headings": "font-heading font-bold tracking-tight text-slate-900 dark:text-slate-100",
+      "hero_title": "text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold tracking-tight leading-[1.1]",
+      "subtitles": "text-lg sm:text-xl text-slate-600 dark:text-slate-300 font-normal leading-relaxed",
+      "eyebrow": "text-xs font-mono uppercase tracking-[0.2em] font-semibold text-teal-700 dark:text-teal-400",
+      "labels": "text-sm font-medium text-slate-700 dark:text-slate-300",
+      "body_copy": "text-base font-sans text-slate-700 dark:text-slate-300 leading-relaxed max-w-prose",
+      "stats_number": "text-3xl sm:text-4xl font-heading font-bold tracking-tight text-slate-950 dark:text-white"
+    }
+  },
+  "colors": {
+    "accent": "#0D9488",
+    "on_accent": "#FFFFFF",
+    "secondary_accent": "#2563EB",
+    "on_secondary_accent": "#FFFFFF",
+    "surfaces": [
+      {
+        "name": "page",
+        "kind": "solid",
+        "bg": "#F8FAFC",
+        "on_bg": "#0F172A",
+        "on_bg_muted": "#475569",
+        "roles": {
+          "link": "#0F766E",
+          "error": "#B91C1C",
+          "success": "#15803D",
+          "warning": "#B45309"
+        }
+      },
+      {
+        "name": "panel",
+        "kind": "solid",
+        "bg": "#FFFFFF",
+        "on_bg": "#0F172A",
+        "on_bg_muted": "#475569",
+        "roles": {
+          "border": "#E2E8F0",
+          "hover_bg": "#F1F5F9",
+          "highlight": "#F0FDFA"
+        }
+      },
+      {
+        "name": "hero_dark",
+        "kind": "solid",
+        "bg": "#0B132B",
+        "on_bg": "#F8FAFC",
+        "on_bg_muted": "#94A3B8",
+        "roles": {
+          "eyebrow": "#2DD4BF",
+          "border": "#1E293B",
+          "card_bg": "#111C3D"
+        }
+      },
+      {
+        "name": "inverse",
+        "kind": "solid",
+        "bg": "#0F172A",
+        "on_bg": "#F8FAFC",
+        "on_bg_muted": "#94A3B8"
+      },
+      {
+        "name": "badge_fresher",
+        "kind": "solid",
+        "bg": "#EFF6FF",
+        "on_bg": "#1D4ED8",
+        "on_bg_muted": "#1E40AF"
+      },
+      {
+        "name": "badge_transition",
+        "kind": "solid",
+        "bg": "#F0FDFA",
+        "on_bg": "#0F766E",
+        "on_bg_muted": "#115E59"
+      },
+      {
+        "name": "badge_career_gap",
+        "kind": "solid",
+        "bg": "#FEF3C7",
+        "on_bg": "#92400E",
+        "on_bg_muted": "#78350F"
+      },
+      {
+        "name": "badge_experienced",
+        "kind": "solid",
+        "bg": "#EEF2FF",
+        "on_bg": "#4338CA",
+        "on_bg_muted": "#3730A3"
+      },
+      {
+        "name": "portal_sidebar",
+        "kind": "solid",
+        "bg": "#0B132B",
+        "on_bg": "#F8FAFC",
+        "on_bg_muted": "#94A3B8"
+      }
+    ]
+  },
+  "entry_surfaces": {
+    "/": "High-authority corporate recruitment split hero: Left features company mission statement, quick category quick-filters (Freshers, Non-IT Transition, Career Gap, Experienced), live active openings metric, and dual CTA (Explore Openings / Candidate Registration); Right features interactive live job ticker card and application stage pipeline preview.",
+    "/login": "Corporate split login: Left dark-navy branding & recruitment security manifesto panel, Right white card with role selector tab (Candidate / Employer / Staff / Admin) and session form.",
+    "/register": "Recruitment candidate onboarding split view: Left guidance panel detailing hiring tracks and direct placement workflow, Right multi-step candidate profile and resume submission form.",
+    "/jobs": "Full-width dual-filter marketplace: Top search bar with keywords/location/track + left facet rail (Experience, Tech Stack, Mode, CTC range in ₹ Lakhs) and right dynamic job card list.",
+    "/candidate/dashboard": "Command center grid: Top application stage tracker (Applied → Offer Received), left status stream with upcoming interviews, right recommended openings & question sets.",
+    "/admin": "Restricted administrative console: Density-first KPI tiles (Job moderation, Candidate pipeline, Fee reconciliation, CSV import), data tables with batch action bars."
+  },
+  "visual_enhancers": {
+    "grid_borders": "1px solid border-slate-200 dark:border-slate-800 for crisp corporate structure without fluffy shadows",
+    "glass_header": "backdrop-blur-md bg-white/90 dark:bg-slate-900/90 border-b border-slate-200/80 sticky top-0 z-50",
+    "badge_styling": "px-2.5 py-1 text-xs font-semibold rounded-md border tracking-wide uppercase font-mono",
+    "button_styling": "font-medium text-sm tracking-normal rounded-lg transition-colors duration-150 active:scale-[0.98]",
+    "stage_pipeline_timeline": "Linear horizontal progress node rail with distinct indicators: Active (Teal Pulse), Passed (Green Check), Pending (Slate Dot), Rejected (Subtle Red Line)"
+  },
+  "grids_and_layouts": {
+    "marketing_tetris": "mode_a: grid-cols-1 md:grid-cols-12 gap-8 with asymmetric spans (col-span-12 lg:col-span-8 for primary visual and col-span-12 lg:col-span-4 for quick-apply / track highlights)",
+    "dashboard_density": "mode_b: grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 with strict h-full stretches and clear data tables",
+    "spacing_scale": "Strict adherence to Tailwind p-4, p-6, p-8, p-12, p-16; sections use py-16 or py-24 with container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+  },
+  "candidate_categories": [
+    {
+      "id": "freshers",
+      "slug": "freshers",
+      "title": "Freshers & Entry-Level Graduates",
+      "tagline": "Kickstart your core software engineering journey with direct corporate placements.",
+      "ideal_for": "B.Tech/BE, BCA/MCA, BSc IT graduates (2023-2026 batches)",
+      "badge": "Entry Level (0-1 yrs)",
+      "color_theme": "blue"
+    },
+    {
+      "id": "non-it-to-it",
+      "slug": "non-it-to-it",
+      "title": "Non-IT to IT Career Transition",
+      "tagline": "Bridge domain expertise from BPO, Sales, Mechanical, or Operations into full-stack IT roles.",
+      "ideal_for": "Working professionals seeking direct shift into development, QA, cloud, and data analytics",
+      "badge": "Career Transition",
+      "color_theme": "teal"
+    },
+    {
+      "id": "career-gap",
+      "slug": "career-gap",
+      "title": "Career Gap Candidates",
+      "tagline": "Re-enter the enterprise workforce with confidence, interview prep, and corporate bridge hiring.",
+      "ideal_for": "Professionals with 1-5+ years career hiatus (maternity, health, civil services prep, sabbaticals)",
+      "badge": "Career Restart",
+      "color_theme": "amber"
+    },
+    {
+      "id": "experienced",
+      "slug": "experienced",
+      "title": "Experienced IT Professionals",
+      "tagline": "Accelerate your trajectory into Senior Engineering, Tech Lead, DevOps, and Architect roles.",
+      "ideal_for": "Mid to senior engineers with 2-12+ years experience seeking competitive salary hikes and tier-1 tech firms",
+      "badge": "Experienced (2-12+ yrs)",
+      "color_theme": "indigo"
+    }
+  ],
+  "application_stages": [
+    "Applied",
+    "Under Review",
+    "Shortlisted",
+    "Interview Scheduled",
+    "Interview Completed",
+    "Selected",
+    "Offer Received",
+    "Joined / Closed"
+  ],
+  "image_urls": {
+    "hero_team": {
+      "url": "https://images.unsplash.com/photo-1758518729685-f88df7890776?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTV8MHwxfHNlYXJjaHwzfHxjb3Jwb3JhdGUlMjBvZmZpY2UlMjBwcm9mZXNzaW9uYWxzJTIwdGVjaCUyMG1lZXRpbmd8ZW58MHx8fHwxNzkxNzAzNDg3fDA&ixlib=rb-4.1.0&q=85",
+      "alt": "DigiPhonics corporate recruitment panel discussing placement interviews",
+      "use_location": "Home Hero section right side feature preview / About Us corporate leadership"
+    },
+    "tech_interview": {
+      "url": "https://images.unsplash.com/photo-1758518731706-be5d5230e5a5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTV8MHwxfHNlYXJjaHwyfHxjb3Jwb3JhdGUlMjBvZmZpY2UlMjBwcm9mZXNzaW9uYWxzJTIwdGVjaCUyMG1lZXRpbmd8ZW58MHx8fHwxNzkxNzAzNDg3fDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Senior engineering panel conducting technical placement interview",
+      "use_location": "Category landing pages (Experienced & Non-IT Transition)"
+    },
+    "software_engineer": {
+      "url": "https://images.unsplash.com/photo-1580894908361-967195033215?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHw0fHxzb2Z0d2FyZSUyMGVuZ2luZWVyJTIwd29ya2luZyUyMGxhcHRvcHxlbnwwfHx8fDE3OTE3MDM0ODd8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Placed software developer working in modern tech campus",
+      "use_location": "Resume & Career Resources Page / Freshers Landing Page"
+    },
+    "coding_desk": {
+      "url": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NDh8MHwxfHNlYXJjaHwxfHxzb2Z0d2FyZSUyMGVuZ2luZWVyJTIwd29ya2luZyUyMGxhcHRvcHxlbnwwfHx8fDE3OTE3MDM0ODd8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Full stack engineer preparing code for technical evaluation",
+      "use_location": "Interview Questions Library & Career Gap Landing Page"
+    }
+  },
+  "motion": {
+    "hero_fade_in": {
+      "initial": { "opacity": 0, "y": 16 },
+      "animate": { "opacity": 1, "y": 0 },
+      "transition": { "duration": 0.4, "ease": [0.16, 1, 0.3, 1] }
+    },
+    "stagger_cards": {
+      "initial": { "opacity": 0, "y": 12 },
+      "whileInView": { "opacity": 1, "y": 0 },
+      "viewport": { "once": true, "margin": "-50px" },
+      "transition": { "duration": 0.35, "ease": "easeOut" }
+    },
+    "hover_lift": "transition-transform duration-200 hover:-translate-y-1 hover:shadow-md"
+  },
+  "accessibility": {
+    "wcag_level": "WCAG AA (minimum 4.5:1 contrast for normal text, 3:1 for large text and badges)",
+    "prefers_reduced_motion": "All motion.div wrapper animations respect motion reduction or use gentle opacity fallbacks",
+    "focus_rings": "focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2 outline-none",
+    "test_attributes": "All clickable buttons, tabs, input fields, navigation links, and status badges MUST include semantic data-testid (e.g., data-testid='hero-explore-jobs-btn', data-testid='candidate-track-fresher-tab', data-testid='apply-job-submit-btn')"
+  },
+  "instructions_to_main_agent": [
+    "1. STRUCTURE & IDENTITY: DigiPhonics Technology is an IT recruitment, corporate staffing, and direct career placement company. NEVER describe it as a 'training institute' or 'coaching center'. Use corporate recruitment terminology (Hiring Partners, Direct Placements, Candidate Shortlisting, CTC Range in ₹ LPA, Talent Acquisition).",
+    "2. HOMEPAGE HERO: Build the hero with the primary headline 'Your Experience. Your Potential. Your Next IT Career.' and 4 prominent category CTA buttons / filter cards (Freshers, Non-IT to IT, Career Gap, Experienced) leading to both dedicated category landing pages and pre-filtered job views.",
+    "3. CATEGORY LANDING PAGES: Create 4 distinct landing pages (/candidates/freshers, /candidates/non-it, /candidates/career-gap, /candidates/experienced) with bespoke messaging, roadmaps to placement, eligibility criteria, CTC projections, and dedicated fast-track registration forms.",
+    "4. JOB PORTAL (/jobs and /jobs/:id): Full-featured search with keyword search, location (Bangalore, Hyderabad, Chennai, Pune, Noida, Remote), candidate track category filter, experience level, salary range (₹3-40 LPA), job save functionality, and rich application modal with resume upload.",
+    "5. EMPLOYER JOB-POSTING PORTAL (/employer/post-job and /employer/dashboard): Form for employers/recruiters to submit job requirements (Title, Skills, Vacancies, Salary range, Job description), subject to Admin moderation/approval.",
+    "6. CANDIDATE PORTAL (/candidate/dashboard): Comprehensive authenticated dashboard with (a) Profile completeness gauge, (b) 8-stage visual application progress timeline, (c) Interview schedules with meeting links, (d) Saved and applied jobs, (e) Resume manager, (f) Question library bookmarks, (g) Service-charge acceptance status and invoice downloads.",
+    "7. INTERVIEW QUESTIONS LIBRARY (/interview-questions): Rich resource with 30+ categorized domains (React, Java, Python, SQL, DevOps, DSA, System Design, QA, etc.), difficulty filters (Easy/Medium/Hard), search, bookmarking, and an interactive 'Random Practice Set' with MCQ and flashcard modes.",
+    "8. SERVICE CHARGE & INVOICE MODULE: Realistic corporate post-placement fee terms (e.g. nominal placement processing charge upon offer letter release), candidate digital consent signoff, generated invoice download view with manual reconciliation status (payments disabled as specified in prompt).",
+    "9. EMPLOYEE / RECRUITER PORTAL (/employee/dashboard): Staff dashboard with virtual digital ID card, assigned candidates, candidate status progression actions, interview link scheduler, and internal notes.",
+    "10. ADMIN PORTAL (/admin): Executive command center with metrics (Total candidates, active jobs, placement conversion rate, pending approvals), Job moderation queue (Approve/Reject), Candidate application pipeline manager, Question bank manager with CSV import/export simulator, Fee config & invoice verification, Enquiry inbox, and Audit logs.",
+    "11. CONTENT & LEGAL PAGES: Full polished pages for About DigiPhonics, Corporate Services, Privacy Policy, Terms of Service, Placement Service Agreement, Refund Policy, and Contact Us with a working enquiry form.",
+    "12. DATA SEEDING: Seed comprehensive, realistic Indian IT recruitment data (e.g., jobs across Bangalore, Pune, Hyderabad with realistic LPA salaries, 50+ interview questions, pre-populated candidate applications with varied stages from 'Applied' to 'Offer Received', sample invoices, and seed credentials for candidate, recruiter, employer, and admin in memory/test_credentials.md).",
+    "13. TESTABILITY: Ensure every interactive button, link, form input, and status badge includes data-testid attributes (e.g., data-testid='job-search-input', data-testid='apply-now-btn', data-testid='candidate-login-btn')."
+  ]
+}

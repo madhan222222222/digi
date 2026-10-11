@@ -1,0 +1,156 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/dm-sans";
+@import "@fontsource-variable/jetbrains-mono";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-sans: 'DM Sans Variable', sans-serif;
+    --font-heading: 'Plus Jakarta Sans Variable', sans-serif;
+    --font-mono: 'JetBrains Mono Variable', monospace;
+    --color-hero: #0B132B;
+    --color-hero-card: #111C3D;
+    --color-hero-border: #1E293B;
+    --color-hero-foreground: #F8FAFC;
+    --color-hero-muted: #94A3B8;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+    --background: #F8FAFC;
+    --foreground: #0F172A;
+    --card: #FFFFFF;
+    --card-foreground: #0F172A;
+    --popover: #FFFFFF;
+    --popover-foreground: #0F172A;
+    --primary: #0D9488;
+    --primary-foreground: #FFFFFF;
+    --secondary: #F1F5F9;
+    --secondary-foreground: #0F172A;
+    --muted: #F1F5F9;
+    --muted-foreground: #475569;
+    --accent: #F0FDFA;
+    --accent-foreground: #0F766E;
+    --destructive: #B91C1C;
+    --border: #E2E8F0;
+    --input: #E2E8F0;
+    --ring: #0D9488;
+    --chart-1: #0D9488;
+    --chart-2: #2563EB;
+    --chart-3: #2DD4BF;
+    --chart-4: #4338CA;
+    --chart-5: #0F766E;
+    --radius: 0.625rem;
+    --sidebar: #0B132B;
+    --sidebar-foreground: #F8FAFC;
+    --sidebar-primary: #0D9488;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #111C3D;
+    --sidebar-accent-foreground: #F8FAFC;
+    --sidebar-border: #1E293B;
+    --sidebar-ring: #0D9488;
+}
+
+.dark {
+    --background: #0B132B;
+    --foreground: #F8FAFC;
+    --card: #111C3D;
+    --card-foreground: #F8FAFC;
+    --popover: #111C3D;
+    --popover-foreground: #F8FAFC;
+    --primary: #2DD4BF;
+    --primary-foreground: #0B132B;
+    --secondary: #1E293B;
+    --secondary-foreground: #F8FAFC;
+    --muted: #1E293B;
+    --muted-foreground: #94A3B8;
+    --accent: #111C3D;
+    --accent-foreground: #2DD4BF;
+    --destructive: #F87171;
+    --border: #1E293B;
+    --input: #1E293B;
+    --ring: #2DD4BF;
+    --chart-1: #2DD4BF;
+    --chart-2: #60A5FA;
+    --chart-3: #0D9488;
+    --chart-4: #818CF8;
+    --chart-5: #14B8A6;
+    --sidebar: #0B132B;
+    --sidebar-foreground: #F8FAFC;
+    --sidebar-primary: #2DD4BF;
+    --sidebar-primary-foreground: #0B132B;
+    --sidebar-accent: #111C3D;
+    --sidebar-accent-foreground: #F8FAFC;
+    --sidebar-border: #1E293B;
+    --sidebar-ring: #2DD4BF;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
+    }
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* Active stage node pulse on the application pipeline rail */
+@keyframes stage-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(13 148 136 / 0.45); }
+  50% { box-shadow: 0 0 0 7px rgb(13 148 136 / 0); }
+}
+.animate-stage-pulse {
+  animation: stage-pulse 2s ease-in-out infinite;
+}
+
+/* Subtle rise for cards entering the viewport (motion lib handles the JS ones) */
+@keyframes ticker-scroll {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
