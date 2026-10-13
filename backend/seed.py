@@ -1,37 +1,58 @@
-"""Bootstrap script: creates the admin account and one staff employee account.
-Run once:  cd /app/backend && python seed.py
 
-Creates NO demo business data (no jobs, questions, or candidates) per the project owner's
-request — real data is entered through the portals."""
+"""Run once to create or update the initial DigiHire staff accounts.
+
+Run from the backend directory:
+    python seed.py
+
+Set the credentials as environment variables before running.
+Do not run this script automatically every time the server starts.
+"""
 
 import asyncio
+import os
 import uuid
 from datetime import datetime, timezone
 
 from lib.db import client, db, ensure_indexes
 from lib.security import hash_password
 
-ADMIN_EMAIL = "madhankrithickm@gmail.com"
-ADMIN_PASSWORD = "madhan@000000"
-EMPLOYEE_EMAIL = "employee@digiphonicstechnology.com"
-EMPLOYEE_PASSWORD = "Employee@12345"
+
+ADMIN_EMAIL = os.environ["ADMIN_EMAIL"].strip().lower()
+ADMIN_PASSWORD = os.environ["ADMIN_PASSWORD"]
+
+EMPLOYEE_EMAIL = os.environ["EMPLOYEE_EMAIL"].strip().lower()
+EMPLOYEE_PASSWORD = os.environ["EMPLOYEE_PASSWORD"]
 
 
-def _now() -> datetime:
+def _now():
     return datetime.now(timezone.utc)
 
 
-async def create_account(email: str, password: str, role: str, full_name: str, designation: str | None = None) -> None:
+async def create_account(
+    email: str,
+    password: str,
+    role: str,
+    full_name: str,
+    designation: str | None = None,
+):
     existing = await db.users.find_one({"email": email})
+
     if existing:
-        # Keep the built-in account's password in sync with this file (it is the single source of truth).
         await db.users.update_one(
             {"id": existing["id"]},
-            {"$set": {"password_hash": hash_password(password), "role": role, "active": True}},
+            {
+                "$set": {
+                    "password_hash": hash_password(password),
+                    "role": role,
+                    "active": True,
+                }
+            },
         )
-        print(f"  updated: {email} ({role})")
+        print(f"Updated account: {email} ({role})")
         return
+
     user_id = str(uuid.uuid4())
+
     await db.users.insert_one(
         {
             "id": user_id,
@@ -45,8 +66,10 @@ async def create_account(email: str, password: str, role: str, full_name: str, d
             "created_at": _now(),
         }
     )
+
     if role == "employee":
         count = await db.employee_profiles.count_documents({})
+
         await db.employee_profiles.insert_one(
             {
                 "id": str(uuid.uuid4()),
@@ -60,18 +83,34 @@ async def create_account(email: str, password: str, role: str, full_name: str, d
                 "updated_at": _now(),
             }
         )
-    print(f"  created: {email} ({role})")
+
+    print(f"Created account: {email} ({role})")
 
 
-async def main() -> None:
-    print("Ensuring indexes...")
-    await ensure_indexes()
-    print("Creating staff accounts (no demo business data)...")
-    await create_account(ADMIN_EMAIL, ADMIN_PASSWORD, "admin", "DigiPhonics Admin")
-    await create_account(EMPLOYEE_EMAIL, EMPLOYEE_PASSWORD, "employee", "Priya Sharma", "Talent Acquisition Specialist")
-    print("Done.")
+async def main():
+    try:
+        print("Checking database indexes...")
+        await ensure_indexes()
+
+        print("Creating/updating initial accounts...")
+        await create_account(
+            ADMIN_EMAIL,
+            ADMIN_PASSWORD,
+            "admin",
+            "DigiHire Admin",
+        )
+        await create_account(
+            EMPLOYEE_EMAIL,
+            EMPLOYEE_PASSWORD,
+            "employee",
+            "DigiHire Staff",
+            "Talent Acquisition Specialist",
+        )
+
+        print("Finished successfully.")
+    finally:
+        client.close()
 
 
 if __name__ == "__main__":
     asyncio.run(main())
-    client.close()
