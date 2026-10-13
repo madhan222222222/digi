@@ -1,7 +1,8 @@
-"""Session auth (httpOnly cookie), role dependencies, audit log + notification helpers.
 
-Sessions are random DB-backed tokens; the cookie carries no user data. Every protected
-router depends on `get_current_user` / `require_roles(...)`.
+"""Session auth (httpOnly-cookie), role dependencies, audit log and notification helpers.
+
+Sessions use random database-backed tokens stored in a secure HTTP-only cookie.
+Protected routes use get_current_user and require_roles.
 """
 
 import secrets
@@ -23,6 +24,7 @@ def _now() -> datetime:
 
 async def create_session(user_id: str) -> str:
     token = secrets.token_urlsafe(32)
+
     await db.sessions.insert_one(
         {
             "token": token,
@@ -31,6 +33,7 @@ async def create_session(user_id: str) -> str:
             "expires_at": _now() + timedelta(days=SESSION_DAYS),
         }
     )
+
     return token
 
 
@@ -39,11 +42,13 @@ async def destroy_session(token: str) -> None:
 
 
 def session_cookie(token: str) -> dict[str, Any]:
+    """Set a persistent cookie for cross-origin HTTPS frontend/API requests."""
     return {
         "key": COOKIE_NAME,
         "value": token,
         "httponly": True,
-        "samesite": "lax",
+        "secure": True,
+        "samesite": "none",
         "path": "/",
         "max_age": SESSION_DAYS * 24 * 3600,
     }
@@ -51,26 +56,47 @@ def session_cookie(token: str) -> dict[str, Any]:
 
 async def get_current_user(request: Request) -> dict:
     token = request.cookies.get(COOKIE_NAME)
+
     if not token:
-        raise HTTPException(status_code=401, detail="Not authenticated")
+        raise HTTPException(
+            status_code=401,
+            detail="Not authenticated",
+        )
+
     session = await db.sessions.find_one({"token": token})
+
     if not session:
-        raise HTTPException(status_code=401, detail="Session expired or invalid")
+        raise HTTPException(
+            status_code=401,
+            detail="Session expired or invalid",
+        )
+
     expires_at = session.get("expires_at")
+
     if isinstance(expires_at, datetime):
         if expires_at.tzinfo is None:
             expires_at = expires_at.replace(tzinfo=timezone.utc)
+
         if expires_at < _now():
-            raise HTTPException(status_code=401, detail="Session expired")
+            await destroy_session(token)
+            raise HTTPException(
+                status_code=401,
+                detail="Session expired",
+            )
+
     user = await db.users.find_one({"id": session["user_id"]})
+
     if not user or not user.get("active", True):
-        raise HTTPException(status_code=401, detail="Account is inactive")
+        raise HTTPException(
+            status_code=401,
+            detail="Account is inactive",
+        )
+
     return user
 
 
 async def get_optional_user(request: Request) -> dict | None:
-    """Like get_current_user but returns None instead of raising — for public endpoints
-    that personalise their response for logged-in users."""
+    """Return None rather than raising when a public route has no valid session."""
     try:
         return await get_current_user(request)
     except HTTPException:
@@ -80,7 +106,11 @@ async def get_optional_user(request: Request) -> dict | None:
 def require_roles(*roles: str):
     async def checker(user: dict = Depends(get_current_user)) -> dict:
         if user.get("role") not in roles:
-            raise HTTPException(status_code=403, detail="Not authorized for this action")
+            raise HTTPException(
+                status_code=403,
+                detail="Not authorized for this action",
+            )
+
         return user
 
     return checker
@@ -112,7 +142,12 @@ async def audit(
     )
 
 
-async def notify(user_id: str, title: str, body: str | None = None, link: str | None = None) -> None:
+async def notify(
+    user_id: str,
+    title: str,
+    body: str | None = None,
+    link: str | None = None,
+) -> None:
     await db.notifications.insert_one(
         {
             "id": str(uuid.uuid4()),
@@ -126,7 +161,14 @@ async def notify(user_id: str, title: str, body: str | None = None, link: str | 
     )
 
 
-async def notify_admins(title: str, body: str | None = None, link: str | None = None) -> None:
-    admins = await db.users.find({"role": "admin", "active": True}).to_list(100)
+async def notify_admins(
+    title: str,
+    body: str | None = None,
+    link: str | None = None,
+) -> None:
+    admins = await db.users.find(
+        {"role": "admin", "active": True}
+    ).to_list(100)
+
     for admin in admins:
         await notify(admin["id"], title, body, link)
