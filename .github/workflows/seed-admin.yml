@@ -1,5 +1,5 @@
 
-name: One-time DigiHire account setup
+name: DigiHire Seed
 
 on:
   workflow_dispatch:
@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   seed:
+    name: Create initial DigiHire accounts
     runs-on: ubuntu-latest
 
     defaults:
@@ -25,7 +26,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: python -m pip install -r requirements.txt
 
       - name: Create initial accounts
         env:
